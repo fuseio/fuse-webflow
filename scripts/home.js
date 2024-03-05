@@ -3,15 +3,15 @@ $(function () {
     const maxWidth = 1000;
     const homeHeroComponent = document.querySelector(".home-hero_component");
     const homeHeroLogoComponent = document.querySelector(
-      ".home-hero_logo_component"
+      ".home-hero_logo_component",
     );
-    const homeHeroComponentWidth = homeHeroComponent.getBoundingClientRect()
-      .width;
+    const homeHeroComponentWidth =
+      homeHeroComponent.getBoundingClientRect().width;
     homeHeroLogoComponent.style.setProperty(
       "width",
       `${
         homeHeroComponentWidth > maxWidth ? maxWidth : homeHeroComponentWidth
-      }px`
+      }px`,
     );
   }
   // heroLogoWidth();
@@ -19,7 +19,7 @@ $(function () {
   function initInfiniteSlide() {
     $(".marquee_track").infiniteslide({
       pauseonhover: false,
-      speed: 35
+      speed: 35,
     });
   }
   initInfiniteSlide();
@@ -35,26 +35,26 @@ $(function () {
       observer: true,
       autoplay: {
         delay: 4000,
-        disableOnInteraction: false
+        disableOnInteraction: false,
       },
       navigation: {
         nextEl: "#swiper-blog-right",
-        prevEl: "#swiper-blog-left"
+        prevEl: "#swiper-blog-left",
       },
       breakpoints: {
         640: {
           slidesPerView: 2,
-          spaceBetween: 40
+          spaceBetween: 40,
         },
         768: {
           slidesPerView: 2,
-          spaceBetween: 48
+          spaceBetween: 48,
         },
         1024: {
           slidesPerView: 3,
-          spaceBetween: 48
-        }
-      }
+          spaceBetween: 48,
+        },
+      },
     });
   }
   initSwiper();
@@ -67,8 +67,8 @@ $(function () {
       grabCursor: true,
       autoplay: {
         delay: 4000,
-        disableOnInteraction: false
-      }
+        disableOnInteraction: false,
+      },
     });
   }
   initTestimonialsSwiper();
@@ -84,12 +84,14 @@ $(function () {
   joinImageAnimation();
 
   function joinImageSpread() {
-    const leftImages = document.querySelector(".join-image-wrapper.left")
-      .children;
-    const rightImages = document.querySelector(".join-image-wrapper.right")
-      .children;
+    const leftImages = document.querySelector(
+      ".join-image-wrapper.left",
+    ).children;
+    const rightImages = document.querySelector(
+      ".join-image-wrapper.right",
+    ).children;
     const joinSection = document.querySelector(
-      ".section-join .section-spacing"
+      ".section-join .section-spacing",
     );
     const joinSectionRect = joinSection.getBoundingClientRect();
     const baseJoinSectionSpaceX = 530;
@@ -101,7 +103,7 @@ $(function () {
         const computedLeftImage = getComputedStyle(leftImage);
         const leftImageLeftPosition = parseInt(
           computedLeftImage.left.split("px")[0],
-          10
+          10,
         );
         const move =
           joinSectionRect.left /
@@ -120,7 +122,7 @@ $(function () {
         const computedRightImage = getComputedStyle(rightImage);
         const rightImageRightPosition = parseInt(
           computedRightImage.right.split("px")[0],
-          10
+          10,
         );
         const move =
           joinSectionRect.left /
@@ -174,7 +176,7 @@ $(function () {
         let thumbnailURL = "";
         try {
           const mediaData = await fetchData(
-            `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`
+            `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`,
           );
           thumbnailURL = mediaData.source_url;
         } catch (error) {
@@ -240,4 +242,57 @@ $(function () {
     observer.observe(targetNode, config);
   }
   childObserver(".section-blog .swiper-wrapper");
+
+  function stripHtml(text) {
+    return new DOMParser()?.parseFromString(text, "text/html")?.body?.textContent;
+  }
+
+  async function generalBlogSwiper() {
+    const urlOfWebsite = "news.fuse.io";
+    const totalPosts = 4;
+    const apiURL = `https://${urlOfWebsite}/wp-json/wp/v2/posts?per_page=${totalPosts}`;
+
+    new Swiper(".home-general-swiper", {
+      slidesPerView: 1,
+      rewind: true,
+      grabCursor: true,
+      observeParents: true,
+      observeSlideChildren: true,
+      observer: true,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+    });
+
+    try {
+      const data = await fetchData(apiURL);
+      let currentPostFraction = 1;
+      for (const post of data) {
+        const postTitle = stripHtml(post.title.rendered);
+        const postExcerpt = stripHtml(post.excerpt.rendered);
+        $(".home-general-swiper .swiper-wrapper").append(`
+            <div class="swiper-slide home-general-swiper-slide">
+              <div class="home-general-item-title">
+                <div class="home-general-pagination-fraction">
+                  <p class="ws-p_16 body_text semibold">${currentPostFraction}</p>
+                  <p class="ws-p_16 body_text semibold">/</p>
+                  <p class="ws-p_16 body_text semibold">${totalPosts}</p>
+                </div>
+                <p class="ws-p_24 black home-testimonial-p-bold">${postTitle}</p>
+                <p class="ws-p_20">${postExcerpt}</p>
+              </div>
+            </div>
+        `);
+        currentPostFraction++;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+  generalBlogSwiper();
 });
