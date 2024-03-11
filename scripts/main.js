@@ -10,10 +10,13 @@ $(function () {
     let community = $("#dropdown_menu-link-community");
     let socials = $("#dropdown_menu-socials");
     let dropdownMenuLinkIconClass = ".dropdown_menu-link_icon";
-    const menuBGOffset = 3;
     const caseStudyWrapper = $("#dropdown_menu-case_study");
     const caseStudy = $("#dropdown_menu-link-case_study");
     const caseStudies = $("#dropdown_menu-case_studies");
+
+    const menuBGOffset = 3;
+    const isLandingPage =
+      !window.location.pathname || window.location.pathname === "/";
 
     gsap.defaults({
       duration: 0.4,
@@ -146,7 +149,11 @@ $(function () {
         }
         menuWrapperClass.addClass("has-child");
         menuClass.addClass("has-collpase");
-        menuClass.css("background-color", "#f3f3f3");
+        if (isLandingPage) {
+          menuClass.css("background-color", "#f3f3f3");
+        } else {
+          menuClass.css("background-color", "#ffffff");
+        }
         menuClass
           .find(dropdownMenuLinkIconClass)
           .css({ opacity: "1", transform: "none" });
@@ -168,7 +175,11 @@ $(function () {
             }
             menuWrapperClass.removeClass("has-child");
             menuClass.removeClass("has-collpase");
-            menuClass.css("background-color", "#ffffff");
+            if (isLandingPage) {
+              menuClass.css("background-color", "#ffffff");
+            } else {
+              menuClass.css("background-color", "#f3f3f3");
+            }
             menuClass
               .find(dropdownMenuLinkIconClass)
               .css({ opacity: "0", transform: "translate(-.375rem)" });
