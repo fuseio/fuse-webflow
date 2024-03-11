@@ -11,46 +11,43 @@ $(function () {
     let socials = $("#dropdown_menu-socials");
     let dropdownMenuLinkIconClass = ".dropdown_menu-link_icon";
     const menuBGOffset = 3;
-
-    // store mouse enter and leave
-    const communityStorage = {
-      community: false,
-      socials: false
-    };
+    const caseStudyWrapper = $("#dropdown_menu-case_study");
+    const caseStudy = $("#dropdown_menu-link-case_study");
+    const caseStudies = $("#dropdown_menu-case_studies");
 
     gsap.defaults({
-      duration: 0.4
+      duration: 0.4,
     });
 
     function revealDropdown(currentLink, currentContent) {
       dropdownWrap.css("display", "flex");
       gsap.set(menuArrow, {
         width: currentLink.outerWidth(),
-        x: currentLink.offset().left
+        x: currentLink.offset().left,
       });
       gsap.set(menuBG, {
         width: currentContent.outerWidth(),
         height: currentContent.outerHeight(),
-        x: currentLink.offset().left + menuBGOffset
+        x: currentLink.offset().left + menuBGOffset,
       });
       gsap.set(content, {
-        opacity: 0
+        opacity: 0,
       });
       gsap.set(currentContent, {
         opacity: 1,
-        x: "0em"
+        x: "0em",
       });
     }
 
     function switchDropdown(currentLink, previousContent, currentContent) {
       gsap.to(menuArrow, {
         width: currentLink.outerWidth(),
-        x: currentLink.offset().left
+        x: currentLink.offset().left,
       });
       gsap.to(menuBG, {
         width: currentContent.outerWidth(),
         height: currentContent.outerHeight(),
-        x: currentLink.offset().left + menuBGOffset
+        x: currentLink.offset().left + menuBGOffset,
       });
       // invert moveDistance if needed
       let moveDistance = 10;
@@ -63,8 +60,8 @@ $(function () {
         {
           opacity: 0,
           x: moveDistance * -1 + "em",
-          duration: 0.3
-        }
+          duration: 0.3,
+        },
       );
       gsap.fromTo(
         currentContent,
@@ -72,8 +69,8 @@ $(function () {
         {
           opacity: 1,
           x: "0em",
-          duration: 0.3
-        }
+          duration: 0.3,
+        },
       );
     }
 
@@ -83,7 +80,7 @@ $(function () {
       onReverseComplete: () => {
         dropdownWrap.css("display", "none");
         menuLink.removeClass("active");
-      }
+      },
     });
     showDropdown
       .from(dropdownWrap, { opacity: 0, rotateX: -10, duration: 0.2 })
@@ -110,62 +107,97 @@ $(function () {
       showDropdown.reverse();
     });
 
-    // Community Hover In
-    function resizeCommunity() {
+    function resizeMenuContainingSubmenu(mouse = "enter") {
       const currentLink = menuLink.filter(".active");
       const currentContent = content.eq(currentLink.index());
 
+      const horizontal = currentLink.offset().left;
+      const left =
+        $(currentLink).data("is-nav-dropdown-center") && mouse === "enter"
+          ? horizontal / 2
+          : horizontal + menuBGOffset;
       gsap.set(menuBG, {
         width: currentContent.outerWidth(),
         height: currentContent.outerHeight(),
-        x: currentLink.offset().left + menuBGOffset
+        x: left,
       });
     }
 
-    community.on("mouseenter", function () {
-      communityStorage["community"] = true;
+    function subnav(
+      menuClass,
+      menuWrapperClass,
+      submenuClass,
+      menuTitle,
+      submenuTitle,
+      isMenuBGTransition,
+    ) {
+      // store mouse enter and leave
+      const storage = {
+        [menuTitle]: false,
+        [submenuTitle]: false,
+      };
 
-      communityWrapper.addClass("has-child");
-      community.addClass("has-collpase");
-      community.css("background-color", "#f3f3f3");
-      community
-        .find(dropdownMenuLinkIconClass)
-        .css({ opacity: "1", transform: "none" });
-      socials.addClass("has-visibility");
+      // Hover In
+      menuClass.on("mouseenter", function () {
+        storage[menuTitle] = true;
 
-      resizeCommunity();
-    });
-
-    socials.on("mouseenter", function () {
-      communityStorage["socials"] = true;
-    });
-
-    // Community Hover Out
-    function communityHoverLeft() {
-      setTimeout(function () {
-        if (!communityStorage["community"] && !communityStorage["socials"]) {
-          communityWrapper.removeClass("has-child");
-          community.removeClass("has-collpase");
-          community.css("background-color", "#ffffff");
-          community
-            .find(dropdownMenuLinkIconClass)
-            .css({ opacity: "0", transform: "translate(-.375rem)" });
-          socials.removeClass("has-visibility");
-
-          resizeCommunity();
+        if (isMenuBGTransition) {
+          menuBG.addClass("has-transition");
         }
-      }, 100);
+        menuWrapperClass.addClass("has-child");
+        menuClass.addClass("has-collpase");
+        menuClass.css("background-color", "#f3f3f3");
+        menuClass
+          .find(dropdownMenuLinkIconClass)
+          .css({ opacity: "1", transform: "none" });
+        submenuClass.addClass("has-visibility");
+
+        resizeMenuContainingSubmenu();
+      });
+
+      submenuClass.on("mouseenter", function () {
+        storage[submenuTitle] = true;
+      });
+
+      // Hover Out
+      function hoverLeft() {
+        setTimeout(function () {
+          if (!storage[menuTitle] && !storage[submenuTitle]) {
+            if (isMenuBGTransition) {
+              menuBG.removeClass("has-transition");
+            }
+            menuWrapperClass.removeClass("has-child");
+            menuClass.removeClass("has-collpase");
+            menuClass.css("background-color", "#ffffff");
+            menuClass
+              .find(dropdownMenuLinkIconClass)
+              .css({ opacity: "0", transform: "translate(-.375rem)" });
+            submenuClass.removeClass("has-visibility");
+
+            resizeMenuContainingSubmenu("leave");
+          }
+        }, 100);
+      }
+
+      menuClass.on("mouseleave", function () {
+        storage[menuTitle] = false;
+        hoverLeft();
+      });
+
+      submenuClass.on("mouseleave", function () {
+        storage[submenuTitle] = false;
+        hoverLeft();
+      });
     }
-
-    community.on("mouseleave", function () {
-      communityStorage["community"] = false;
-      communityHoverLeft();
-    });
-
-    socials.on("mouseleave", function () {
-      communityStorage["socials"] = false;
-      communityHoverLeft();
-    });
+    subnav(community, communityWrapper, socials, "community", "socials", false);
+    subnav(
+      caseStudy,
+      caseStudyWrapper,
+      caseStudies,
+      "caseStudy",
+      "caseStudies",
+      true,
+    );
   }
   navMenu();
 
@@ -178,13 +210,12 @@ $(function () {
       // Prepare the form data
       var formData = {
         submittedAt: Date.now(),
-        fields: [{ name: "email", value: $(email).val() }]
+        fields: [{ name: "email", value: $(email).val() }],
       };
 
       // Make the API request
       $.ajax({
-        url:
-          "https://api.hsforms.com/submissions/v3/integration/submit/25596428/7806dbb4-bf5d-4fd3-8589-4e125c0e3e79",
+        url: "https://api.hsforms.com/submissions/v3/integration/submit/25596428/7806dbb4-bf5d-4fd3-8589-4e125c0e3e79",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(formData),
@@ -195,7 +226,7 @@ $(function () {
         error: function () {
           $(form).css("display", "none");
           $(error).css("display", "block");
-        }
+        },
       });
     });
   }
@@ -203,13 +234,13 @@ $(function () {
     form: "#wf-form-subscription-form",
     email: "#wf-form-subscription-form input[name='email']",
     success: ".footer_column-form .w-form-done",
-    error: ".footer_column-form .w-form-fail"
+    error: ".footer_column-form .w-form-fail",
   });
   submitHubspotForm({
     form: "#wf-form-Newsletter-Popup-Form",
     email: "#wf-form-Newsletter-Popup-Form input[name='email']",
     success: "#wf-form-Newsletter-Popup-Form .w-form-done",
-    error: "#wf-form-Newsletter-Popup-Form .w-form-fail"
+    error: "#wf-form-Newsletter-Popup-Form .w-form-fail",
   });
 
   function resizeHubspotOperatorForm() {
@@ -221,8 +252,8 @@ $(function () {
         for (const entry of entries) {
           if (entry.contentRect.width) {
             setTimeout(() => {
-              const modalDialogueTop = modalDialogueSelector.getBoundingClientRect()
-                .top;
+              const modalDialogueTop =
+                modalDialogueSelector.getBoundingClientRect().top;
               if (modalDialogueTop < 0) {
                 const modalDialogueTopPositive = modalDialogueTop * -1;
                 modalDialogueSelector.style.top = `calc(${modalDialogueTopPositive}px + 5rem)`;
@@ -253,7 +284,7 @@ $(function () {
         document.querySelector(topnav).style.top = "0";
       } else if (menuContentOpacityValue !== 1) {
         document.querySelector(topnav).style.top = `-${$(topnav).outerHeight(
-          true
+          true,
         )}px`;
       }
       prevScrollpos = currentScrollPos;
@@ -262,12 +293,12 @@ $(function () {
       if (currentScrollPos > 5) {
         $(".navbar-bg").css({
           "background-color": "rgba(255, 255, 255, 0.7)",
-          "backdrop-filter": "blur(10px)"
+          "backdrop-filter": "blur(10px)",
         });
       } else {
         $(".navbar-bg").css({
           "background-color": "transparent",
-          "backdrop-filter": "blur(0)"
+          "backdrop-filter": "blur(0)",
         });
       }
     });
@@ -300,7 +331,7 @@ $(function () {
   function initTippy() {
     tippy("[data-tippy-content]", {
       placement: "bottom",
-      arrow: true
+      arrow: true,
     });
   }
   initTippy();
@@ -313,8 +344,8 @@ $(function () {
       grabCursor: true,
       autoplay: {
         delay: 4000,
-        disableOnInteraction: false
-      }
+        disableOnInteraction: false,
+      },
     });
   }
   initCaseStudiesSwiper();
@@ -333,7 +364,7 @@ $(function () {
       const percent =
         ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
       const popupLastShown = window.localStorage.getItem(
-        "newsletter-popup-shown-date"
+        "newsletter-popup-shown-date",
       );
       const timeSinceLastShown = new Date().getTime() - popupLastShown;
 
@@ -343,7 +374,7 @@ $(function () {
       ) {
         window.localStorage.setItem(
           "newsletter-popup-shown-date",
-          new Date().getTime()
+          new Date().getTime(),
         );
         document.getElementById("newsletter-popup").style.display = "flex";
       }
