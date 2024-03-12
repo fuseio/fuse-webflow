@@ -24,41 +24,6 @@ $(function () {
   }
   initInfiniteSlide();
 
-  function initSwiper() {
-    new Swiper(".swiper-blog", {
-      slidesPerView: 1,
-      spaceBetween: 40,
-      rewind: true,
-      grabCursor: true,
-      observeParents: true,
-      observeSlideChildren: true,
-      observer: true,
-      autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-      },
-      navigation: {
-        nextEl: "#swiper-blog-right",
-        prevEl: "#swiper-blog-left",
-      },
-      breakpoints: {
-        640: {
-          slidesPerView: 2,
-          spaceBetween: 40,
-        },
-        768: {
-          slidesPerView: 2,
-          spaceBetween: 48,
-        },
-        1024: {
-          slidesPerView: 3,
-          spaceBetween: 48,
-        },
-      },
-    });
-  }
-  initSwiper();
-
   function initTestimonialsSwiper() {
     new Swiper("#home-testimonials", {
       slidesPerView: 1.2,
