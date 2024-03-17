@@ -10,9 +10,6 @@ $(function () {
     let community = $("#dropdown_menu-link-community");
     let socials = $("#dropdown_menu-socials");
     let dropdownMenuLinkIconClass = ".dropdown_menu-link_icon";
-    const caseStudyWrapper = $("#dropdown_menu-case_study");
-    const caseStudy = $("#dropdown_menu-link-case_study");
-    const caseStudies = $("#dropdown_menu-case_studies");
 
     const menuBGOffset = 3;
     const isLandingPage =
@@ -24,6 +21,9 @@ $(function () {
 
     function revealDropdown(currentLink, currentContent) {
       dropdownWrap.css("display", "flex");
+      const x = $(currentLink).data("is-nav-dropdown-center")
+        ? currentLink.offset().left / 2
+        : currentLink.offset().left + menuBGOffset;
       gsap.set(menuArrow, {
         width: currentLink.outerWidth(),
         x: currentLink.offset().left,
@@ -31,7 +31,7 @@ $(function () {
       gsap.set(menuBG, {
         width: currentContent.outerWidth(),
         height: currentContent.outerHeight(),
-        x: currentLink.offset().left + menuBGOffset,
+        x,
       });
       gsap.set(content, {
         opacity: 0,
@@ -43,6 +43,9 @@ $(function () {
     }
 
     function switchDropdown(currentLink, previousContent, currentContent) {
+      const x = $(currentLink).data("is-nav-dropdown-center")
+        ? currentLink.offset().left / 2
+        : currentLink.offset().left + menuBGOffset;
       gsap.to(menuArrow, {
         width: currentLink.outerWidth(),
         x: currentLink.offset().left,
@@ -50,7 +53,7 @@ $(function () {
       gsap.to(menuBG, {
         width: currentContent.outerWidth(),
         height: currentContent.outerHeight(),
-        x: currentLink.offset().left + menuBGOffset,
+        x,
       });
       // invert moveDistance if needed
       let moveDistance = 10;
@@ -132,7 +135,7 @@ $(function () {
       submenuClass,
       menuTitle,
       submenuTitle,
-      isMenuBGTransition,
+      isMenuBGTransition = false,
     ) {
       // store mouse enter and leave
       const storage = {
@@ -200,15 +203,7 @@ $(function () {
         hoverLeft();
       });
     }
-    subnav(community, communityWrapper, socials, "community", "socials", false);
-    subnav(
-      caseStudy,
-      caseStudyWrapper,
-      caseStudies,
-      "caseStudy",
-      "caseStudies",
-      true,
-    );
+    subnav(community, communityWrapper, socials, "community", "socials");
   }
   navMenu();
 
