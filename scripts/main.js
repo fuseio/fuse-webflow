@@ -21,9 +21,9 @@ $(function () {
 
     function revealDropdown(currentLink, currentContent) {
       dropdownWrap.css("display", "flex");
-      const xOffset = 100;
+      const xOffset = 70;
       const x = $(currentLink).data("is-nav-dropdown-center")
-        ? currentLink.offset().left / 2 + xOffset
+        ? currentLink.offset().left - currentContent.outerWidth() / 2 + xOffset
         : currentLink.offset().left + menuBGOffset;
       gsap.set(menuArrow, {
         width: currentLink.outerWidth(),
@@ -44,9 +44,9 @@ $(function () {
     }
 
     function switchDropdown(currentLink, previousContent, currentContent) {
-      const xOffset = 100;
+      const xOffset = 70;
       const x = $(currentLink).data("is-nav-dropdown-center")
-        ? currentLink.offset().left / 2 + xOffset
+        ? currentLink.offset().left - currentContent.outerWidth() / 2 + xOffset
         : currentLink.offset().left + menuBGOffset;
       gsap.to(menuArrow, {
         width: currentLink.outerWidth(),
