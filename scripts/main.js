@@ -403,51 +403,6 @@ $(function () {
   }
   newsletterPopup();
 
-  function appendCanonicalURL() {
-    const locales = {
-      "/es": true,
-      "/pt": true,
-      "/fr": true,
-    };
-
-    function isLocale() {
-      const currentPath = window.location.pathname;
-      for (const locale in locales) {
-        if (currentPath.includes(locale)) {
-          return locale;
-        }
-      }
-      return "";
-    }
-
-    function getCanonicalUrl(languagePath) {
-      const currentPath = window.location.pathname;
-      const urlParts = currentPath.split(languagePath);
-      const pathExludedLocale = urlParts.join("");
-      const canonicalUrl = `${window.location.origin}${pathExludedLocale}`;
-      return canonicalUrl;
-    }
-
-    const locale = isLocale();
-    if (!locale) {
-      return;
-    }
-
-    const existingCanonicalTag = document.querySelector(
-      'link[rel="canonical"]',
-    );
-    if (existingCanonicalTag) {
-      existingCanonicalTag.parentNode.removeChild(existingCanonicalTag);
-    }
-
-    const canonicalUrl = getCanonicalUrl(locale);
-    const link = document.createElement("link");
-    link.rel = "canonical";
-    link.href = canonicalUrl;
-    document.head.appendChild(link);
-  }
-  appendCanonicalURL();
-
   function initSwiperBlog() {
     new Swiper(".swiper-blog", {
       slidesPerView: 1,
