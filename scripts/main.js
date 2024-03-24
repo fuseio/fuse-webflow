@@ -476,7 +476,7 @@ $(function () {
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65ed8ecdd2f4a08599955790_Frame%201000005445.svg",
         banner:
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65ed8c4684b3fb349d6b7d6c_Frame%201000004852.png",
-        link: "https://www.fuse.io/casestudies/freedom",
+        link: `${window.location.origin}/casestudies/freedom`,
         exists: true,
       },
       {
@@ -489,7 +489,7 @@ $(function () {
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65ed8ecdd2f4a08599955790_Frame%201000005445.svg",
         banner:
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65ed9ee9a4f1df10ff246e9e_Frame%201000004792.png",
-        link: "https://www.fuse.io/casestudies/mystic-valley",
+        link: `${window.location.origin}/casestudies/mystic-valley`,
         exists: true,
       },
       {
@@ -503,7 +503,7 @@ $(function () {
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65edb283d2e2ac07348a674f_Frame%201000005443.svg",
         banner:
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65edb283d2f4a08599a5577c_Frame%201000005150.png",
-        link: "https://www.fuse.io/casestudies/sanduk",
+        link: `${window.location.origin}/casestudies/sanduk`,
         exists: true,
       },
       {
@@ -516,7 +516,7 @@ $(function () {
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65edb38ac45647ad7dd06573_Frame%201000005443.svg",
         banner:
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65edb38b370b0f7f3a1bec95_Frame%201000004852.png",
-        link: "https://www.fuse.io/casestudies/zneakrz",
+        link: `${window.location.origin}/casestudies/zneakrz`,
         exists: false,
       },
       {
@@ -530,7 +530,7 @@ $(function () {
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65edb53358df5f9df9a8a872_Frame%201000005444.svg",
         banner:
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65edb533726cb0f88c043f08_Frame%201000004852.png",
-        link: "https://www.fuse.io/casestudies/chromepay",
+        link: `${window.location.origin}/casestudies/chromepay`,
         exists: true,
       },
     ];
