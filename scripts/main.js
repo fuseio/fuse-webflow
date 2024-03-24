@@ -476,7 +476,7 @@ $(function () {
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65ed8ecdd2f4a08599955790_Frame%201000005445.svg",
         banner:
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65ed8c4684b3fb349d6b7d6c_Frame%201000004852.png",
-        link: "https://www.fuse.io/casestudies/freedom-wallet",
+        link: "https://www.fuse.io/casestudies/freedom",
         exists: true,
       },
       {
@@ -504,7 +504,7 @@ $(function () {
         banner:
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65edb283d2f4a08599a5577c_Frame%201000005150.png",
         link: "https://www.fuse.io/casestudies/sanduk",
-        exists: false,
+        exists: true,
       },
       {
         name: "Zneakrz",
