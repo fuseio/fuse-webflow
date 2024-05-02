@@ -517,7 +517,7 @@ $(function () {
         banner:
           "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/65edb38b370b0f7f3a1bec95_Frame%201000004852.png",
         link: `${window.location.origin}/casestudies/zneakrz`,
-        exists: false,
+        exists: true,
       },
       {
         name: "Chromepay",
