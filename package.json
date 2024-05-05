@@ -1,0 +1,33 @@
+{
+  "name": "fuse-webflow",
+  "version": "0.1.0",
+  "description": "Custom code of Fuse Webflow website.",
+  "homepage": "https://github.com/fuseio/fuse-webflow",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fuseio/fuse-webflow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fuseio/fuse-webflow/issues"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development node ./bin/build.js",
+    "build": "cross-env NODE_ENV=production node ./bin/build.js",
+    "lint": "eslint --ignore-path .gitignore ./src && prettier --check ./src",
+    "lint:fix": "eslint --ignore-path .gitignore ./src --fix",
+    "format": "prettier --write ./src"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.20.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-simple-import-sort": "^12.0.0",
+    "prettier": "^3.2.5"
+  }
+}
