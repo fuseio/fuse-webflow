@@ -14,6 +14,7 @@ const ENTRY_POINTS = [
   'src/scripts/main.js',
   'src/scripts/operator-grant-program.js',
   'src/scripts/web3-business-grant-program.js',
+  'src/scripts/case-studies/zneakrz.js',
   'src/styles/main.css',
 ];
 
