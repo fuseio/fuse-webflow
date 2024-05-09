@@ -1,21 +1,4 @@
 $(function () {
-  function heroLogoWidth() {
-    const maxWidth = 1000;
-    const homeHeroComponent = document.querySelector(".home-hero_component");
-    const homeHeroLogoComponent = document.querySelector(
-      ".home-hero_logo_component",
-    );
-    const homeHeroComponentWidth =
-      homeHeroComponent.getBoundingClientRect().width;
-    homeHeroLogoComponent.style.setProperty(
-      "width",
-      `${
-        homeHeroComponentWidth > maxWidth ? maxWidth : homeHeroComponentWidth
-      }px`,
-    );
-  }
-  // heroLogoWidth();
-
   function initInfiniteSlide() {
     $(".marquee_track").infiniteslide({
       pauseonhover: false,
@@ -47,62 +30,6 @@ $(function () {
     }
   }
   joinImageAnimation();
-
-  function joinImageSpread() {
-    const leftImages = document.querySelector(
-      ".join-image-wrapper.left",
-    ).children;
-    const rightImages = document.querySelector(
-      ".join-image-wrapper.right",
-    ).children;
-    const joinSection = document.querySelector(
-      ".section-join .section-spacing",
-    );
-    const joinSectionRect = joinSection.getBoundingClientRect();
-    const baseJoinSectionSpaceX = 530;
-    const baseWindowWidth = 1680;
-
-    if (window.innerWidth > baseWindowWidth) {
-      for (const leftImage of leftImages) {
-        const computedMapLeftImage = leftImage.computedStyleMap();
-        const computedLeftImage = getComputedStyle(leftImage);
-        const leftImageLeftPosition = parseInt(
-          computedLeftImage.left.split("px")[0],
-          10,
-        );
-        const move =
-          joinSectionRect.left /
-            (baseJoinSectionSpaceX / leftImageLeftPosition) -
-          leftImageLeftPosition;
-
-        if (computedMapLeftImage.get("left").value === "auto") {
-          leftImage.style.setProperty("right", `-${move}px`);
-        } else {
-          leftImage.style.setProperty("left", `${move}px`);
-        }
-      }
-
-      for (const rightImage of rightImages) {
-        const computedMapRightImage = rightImage.computedStyleMap();
-        const computedRightImage = getComputedStyle(rightImage);
-        const rightImageRightPosition = parseInt(
-          computedRightImage.right.split("px")[0],
-          10,
-        );
-        const move =
-          joinSectionRect.left /
-            (baseJoinSectionSpaceX / rightImageRightPosition) -
-          rightImageRightPosition;
-
-        if (computedMapRightImage.get("right").value === "auto") {
-          rightImage.style.setProperty("left", `-${move}px`);
-        } else {
-          rightImage.style.setProperty("right", `${move}px`);
-        }
-      }
-    }
-  }
-  // joinImageSpread();
 
   function initGA4ButtonEvents() {
     $("button").click(function () {
@@ -165,35 +92,6 @@ $(function () {
     }
   }
   getBlogPosts();
-
-  const inViewport = (selector) => {
-    const element = document.querySelector(selector);
-    const elementBoundingClientRect =
-      element && element.getBoundingClientRect();
-    const offset = 0;
-
-    if (elementBoundingClientRect) {
-      return (
-        elementBoundingClientRect.top - offset >= 0 &&
-        elementBoundingClientRect.bottom > 0 &&
-        elementBoundingClientRect.bottom + offset <= window.innerHeight
-      );
-    } else {
-      return false;
-    }
-  };
-
-  function viewportObserver() {
-    let isViewport = false;
-
-    window.addEventListener("scroll", () => {
-      if (inViewport(".section-blog") && !isViewport) {
-        getBlogPosts();
-        isViewport = true;
-      }
-    });
-  }
-  // viewportObserver();
 
   function childObserver(selector) {
     const targetNode = document.querySelector(selector);
