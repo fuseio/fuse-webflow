@@ -68,7 +68,7 @@ $(function () {
         let thumbnailURL = "";
         try {
           const mediaData = await fetchData(
-            `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`,
+            `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`
           );
           thumbnailURL = mediaData.source_url;
         } catch (error) {
@@ -107,71 +107,61 @@ $(function () {
   childObserver(".section-blog .swiper-wrapper");
 
   function stripHtml(text) {
-    return new DOMParser()?.parseFromString(text, "text/html")?.body
-      ?.textContent;
+    return new DOMParser()?.parseFromString(
+      text,
+      "text/html"
+    )?.body?.textContent;
   }
 
-  async function generalBlogSwiper() {
-    const urlOfWebsite = "news.fuse.io";
-    const totalPosts = 4;
-    const apiURL = `https://${urlOfWebsite}/wp-json/wp/v2/posts?per_page=${totalPosts}`;
+  function animateHero() {
+    const heading = document.querySelector(".home-hero-h1");
+    const headingWords = heading.textContent.split(" ");
+    heading.innerHTML = headingWords
+      .map((headingWord) => `<span class="hero-h1-word">${headingWord}</span>`)
+      .join(" ");
 
-    new Swiper(".home-general-swiper", {
-      slidesPerView: 1,
-      rewind: true,
-      grabCursor: true,
-      observeParents: true,
-      observeSlideChildren: true,
-      observer: true,
-      autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-      },
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-    });
+    const description = document.querySelector("#hero-description");
+    const descriptionWords = description.textContent.split(" ");
+    description.innerHTML = descriptionWords
+      .map(
+        (descriptionWord) =>
+          `<span class="hero-description-word">${descriptionWord}</span>`
+      )
+      .join(" ");
 
-    try {
-      const data = await fetchData(apiURL);
-      let currentPostFraction = 1;
-      for (const post of data) {
-        const postTitle = stripHtml(post.title.rendered);
-        const postExcerpt = stripHtml(post.excerpt.rendered);
-        const postThumbnail = post.featured_media;
-
-        let thumbnailURL = "";
-        try {
-          const mediaData = await fetchData(
-            `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`,
-          );
-          thumbnailURL = mediaData.source_url;
-        } catch (error) {
-          console.error("Error:", error);
-        }
-
-        $(".home-general-swiper .swiper-wrapper").append(`
-            <div class="swiper-slide home-general-swiper-slide">
-              <div class="home-general-item-banner">
-                <img class="home-general-item-image" src="${thumbnailURL}" loading="lazy" alt="${postTitle}">
-                <div class="home-general-pagination-fraction">
-                  <p class="ws-p_16 body_text semibold">${currentPostFraction}</p>
-                  <p class="ws-p_16 body_text semibold">/</p>
-                  <p class="ws-p_16 body_text semibold">${totalPosts}</p>
-                </div>
-              </div>
-              <div class="home-general-item-title">
-                <p class="ws-p_24 black home-testimonial-p-bold">${postTitle}</p>
-                <p class="ws-p_20">${postExcerpt}</p>
-              </div>
-            </div>
-        `);
-        currentPostFraction++;
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    const tl = gsap.timeline();
+    tl.to(".home_hero-logo_wrapper img", {
+      duration: 0.3,
+      opacity: 1,
+      x: 0,
+      stagger: 0.05,
+    })
+      .to("#hero-logo-title", { duration: 0.3, opacity: 1 })
+      .to(".home-hero-h1", { duration: 0, opacity: 1 })
+      .to(".hero-h1-word", {
+        duration: 0.5,
+        opacity: 1,
+        stagger: 0.2,
+      })
+      .to("#hero-description", { duration: 0, opacity: 1 })
+      .to(".hero-description-word", {
+        duration: 0.3,
+        opacity: 1,
+        y: 0,
+        stagger: 0.05,
+      })
+      .to(".home-hero-button-wrap", {
+        duration: 0.3,
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+      })
+      .to(".home-hero-announcement", {
+        duration: 0.3,
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+      });
   }
-  generalBlogSwiper();
+  animateHero();
 });
