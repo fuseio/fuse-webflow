@@ -1,0 +1,23 @@
+.home-hero-h1,
+#hero-description,
+.hero-h1-word,
+#hero-logo-title,
+.home_hero-logo_wrapper img {
+  opacity: 0;
+}
+
+.home_hero-logo_wrapper img {
+  transform: translateX(-20px);
+}
+
+.hero-description-word,
+.home-hero-button-wrap,
+.home-hero-announcement {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-h1-word,
+.hero-description-word {
+  display: inline-block;
+}

@@ -16,6 +16,7 @@ const ENTRY_POINTS = [
   'src/scripts/web3-business-grant-program.js',
   'src/scripts/case-studies/zneakrz.js',
   'src/styles/main.css',
+  'src/styles/home.css',
 ];
 
 // Config dev serving

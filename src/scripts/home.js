@@ -68,7 +68,7 @@ $(function () {
         let thumbnailURL = "";
         try {
           const mediaData = await fetchData(
-            `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`,
+            `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`
           );
           thumbnailURL = mediaData.source_url;
         } catch (error) {
@@ -107,8 +107,10 @@ $(function () {
   childObserver(".section-blog .swiper-wrapper");
 
   function stripHtml(text) {
-    return new DOMParser()?.parseFromString(text, "text/html")?.body
-      ?.textContent;
+    return new DOMParser()?.parseFromString(
+      text,
+      "text/html"
+    )?.body?.textContent;
   }
 
   async function generalBlogSwiper() {
@@ -144,7 +146,7 @@ $(function () {
         let thumbnailURL = "";
         try {
           const mediaData = await fetchData(
-            `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`,
+            `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`
           );
           thumbnailURL = mediaData.source_url;
         } catch (error) {
@@ -173,5 +175,57 @@ $(function () {
       console.error("Error:", error);
     }
   }
-  generalBlogSwiper();
+  // generalBlogSwiper();
+
+  function animateHero() {
+    const heading = document.querySelector(".home-hero-h1");
+    const headingWords = heading.textContent.split(" ");
+    heading.innerHTML = headingWords
+      .map((headingWord) => `<span class="hero-h1-word">${headingWord}</span>`)
+      .join(" ");
+
+    const description = document.querySelector("#hero-description");
+    const descriptionWords = description.textContent.split(" ");
+    description.innerHTML = descriptionWords
+      .map(
+        (descriptionWord) =>
+          `<span class="hero-description-word">${descriptionWord}</span>`
+      )
+      .join(" ");
+
+    const tl = gsap.timeline();
+    tl.to(".home_hero-logo_wrapper img", {
+      duration: 0.3,
+      opacity: 1,
+      x: 0,
+      stagger: 0.05,
+    })
+      .to("#hero-logo-title", { duration: 0.3, opacity: 1 })
+      .to(".home-hero-h1", { duration: 0, opacity: 1 })
+      .to(".hero-h1-word", {
+        duration: 0.5,
+        opacity: 1,
+        stagger: 0.2,
+      })
+      .to("#hero-description", { duration: 0, opacity: 1 })
+      .to(".hero-description-word", {
+        duration: 0.3,
+        opacity: 1,
+        y: 0,
+        stagger: 0.05,
+      })
+      .to(".home-hero-button-wrap", {
+        duration: 0.3,
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+      })
+      .to(".home-hero-announcement", {
+        duration: 0.3,
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+      });
+  }
+  animateHero();
 });
