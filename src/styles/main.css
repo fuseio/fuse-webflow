@@ -370,3 +370,19 @@ a:hover .link-arrow {
 /*
   HUBSPOT BECOME AN OPERATOR FORM END
 */
+
+.join-image {
+	animation: jumping 3.4s ease-in-out infinite;
+}
+
+@keyframes jumping {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(15px);
+    }
+    100% {
+        transform: translateY(0);
+  }
+}
