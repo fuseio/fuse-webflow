@@ -21,16 +21,6 @@ $(function () {
   }
   initTestimonialsSwiper();
 
-  function joinImageAnimation() {
-    const totalImages = 12;
-    let decimal = 0.25;
-    for (let i = 1; i <= totalImages; i++) {
-      const currDelay = i * decimal;
-      $(`.join-image_${i}`).css("animation-delay", `${currDelay}s`);
-    }
-  }
-  joinImageAnimation();
-
   function initGA4ButtonEvents() {
     $("button").click(function () {
       if ($(this).data("event-name") !== undefined) {
@@ -105,13 +95,6 @@ $(function () {
     observer.observe(targetNode, config);
   }
   childObserver(".section-blog .swiper-wrapper");
-
-  function stripHtml(text) {
-    return new DOMParser()?.parseFromString(
-      text,
-      "text/html"
-    )?.body?.textContent;
-  }
 
   function animateHero() {
     const heading = document.querySelector(".home-hero-h1");
