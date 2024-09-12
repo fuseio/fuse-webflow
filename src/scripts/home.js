@@ -97,7 +97,7 @@ $(function () {
   childObserver(".section-blog .swiper-wrapper");
 
   function animateHero() {
-    const heading = document.querySelector(".home-hero-h1");
+    const heading = document.querySelector(".home_hero-h1");
     const headingWords = heading.textContent.split(" ");
     heading.innerHTML = headingWords
       .map((headingWord) => `<span class="hero-h1-word">${headingWord}</span>`)
@@ -120,7 +120,7 @@ $(function () {
       stagger: 0.05,
     })
       .to("#hero-logo-title", { duration: 0.3, opacity: 1 })
-      .to(".home-hero-h1", { duration: 0, opacity: 1 })
+      .to(".home_hero-h1", { duration: 0, opacity: 1 })
       .to(".hero-h1-word", {
         duration: 0.5,
         opacity: 1,
@@ -147,4 +147,25 @@ $(function () {
       });
   }
   animateHero();
+
+  function initHighlightSwiper() {
+    new Swiper("#home-highlight-swiper", {
+      slidesPerView: 1,
+      loop: true,
+      grabCursor: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      navigation: {
+        nextEl: "#home-highlight-right",
+        prevEl: "#home-highlight-left",
+      },
+      pagination: {
+      	el: "#home-highlight-pagination",
+        clickable: true,
+      },
+    });
+  }
+  initHighlightSwiper();
 });
