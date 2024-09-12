@@ -32,10 +32,10 @@ function animateRoadmap() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        window.addEventListener('scroll', animateRoadmapOnScroll);
-        animateRoadmapOnScroll();
+        window.addEventListener('scroll', onScroll);
+        onScroll();
       } else {
-        window.removeEventListener('scroll', animateRoadmapOnScroll);
+        window.removeEventListener('scroll', onScroll);
       }
     });
   }, { 
@@ -44,7 +44,7 @@ function animateRoadmap() {
 
   observer.observe(wrapper);
 
-  function animateRoadmapOnScroll() {
+  function onScroll() {
     const wrapperRect = wrapper.getBoundingClientRect();
     const wrapperTop = wrapperRect.top;
     const wrapperHeight = wrapperRect.height;
@@ -58,13 +58,6 @@ function animateRoadmap() {
 
     wrapper.style.height = `${revealHeight}px`;
   }
-
-  function resetRoadmap() {
-    wrapper.style.height = '0px';
-  }
-
-  // Set the initial state
-  resetRoadmap();
 }
 
 window.Webflow?.push(async () => {

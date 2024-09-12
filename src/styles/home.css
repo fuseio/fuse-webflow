@@ -1,4 +1,4 @@
-.home-hero-h1,
+.home_hero-h1,
 #hero-description,
 .hero-h1-word,
 #hero-logo-title,
@@ -20,4 +20,8 @@
 .hero-h1-word,
 .hero-description-word {
   display: inline-block;
+}
+
+.operator_content:hover p {
+  color: var(--gray-900);
 }
