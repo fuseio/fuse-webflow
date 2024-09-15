@@ -1,3 +1,5 @@
+import { animateHeroNumbers } from '../utils/helper';
+
 $(function () {
   function initInfiniteSlide() {
     $(".marquee_track").infiniteslide({
@@ -168,4 +170,6 @@ $(function () {
     });
   }
   initHighlightSwiper();
+
+  animateHeroNumbers();
 });
