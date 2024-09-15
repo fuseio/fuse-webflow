@@ -1,3 +1,5 @@
+import { CountUp } from 'countup.js';
+
 function animateSummaryTab() {
   const pills = document.querySelectorAll(".network_summary-pill");
   const bg = document.querySelector(".network_summary_tab-background");
@@ -60,7 +62,88 @@ function animateRoadmap() {
   }
 }
 
+function animateHeroNumbers() {
+  const countUpDigits = [
+    {
+      target: document.querySelector("#transactions-digit"),
+      defaults: {
+        startVal: 0,
+        endVal: 135,
+        decimalPlaces: 0,
+        duration: 2,
+      }
+    },
+    {
+      target: document.querySelector("#projects-digit"),
+      defaults: {
+        startVal: 0,
+        endVal: 150,
+        decimalPlaces: 0,
+        duration: 2,
+      }
+    },
+    {
+      target: document.querySelector("#uptime-digit"),
+      defaults: {
+        startVal: 0,
+        endVal: 99.99,
+        decimalPlaces: 2,
+        duration: 2,
+      },
+    },
+    {
+      target: document.querySelector("#smartwallets-digit"),
+      defaults: {
+        startVal: 0,
+        endVal: 1.00,
+        decimalPlaces: 2,
+        duration: 2,
+      }
+    },
+  ]
+
+  const countUpCommonDefaults = {
+    enableScrollSpy: true,
+    scrollSpyOnce: true,
+  }
+
+  for(let i = 0; i < countUpDigits.length; i++) {
+    const countUp = new CountUp(countUpDigits[i].target, countUpDigits[i].defaults.endVal, {...countUpDigits[i].defaults, ...countUpCommonDefaults});
+    countUp.handleScroll();
+    countUp.start();
+  }
+}
+
+function animateL2Features() {
+  document.querySelectorAll('.network_l2-feature').forEach(feature => {
+    const ellipse = feature.querySelector('.network_l2_feature-ellipse');
+    let animationTimeout;
+
+    feature.addEventListener('mouseenter', () => {
+      clearTimeout(animationTimeout);
+      
+      ellipse.style.borderRadius = '12px';
+      
+      animationTimeout = setTimeout(() => {
+        ellipse.style.width = '100%';
+      }, 200);
+    });
+
+    feature.addEventListener('mouseleave', () => {
+      clearTimeout(animationTimeout);
+      
+      ellipse.style.width = '1.3rem';
+      
+      animationTimeout = setTimeout(() => {
+        ellipse.style.borderRadius = '100%';
+      }, 800);
+    });
+  });
+}
+
 window.Webflow?.push(async () => {
   animateSummaryTab();
   animateRoadmap();
+  animateHeroNumbers();
+  animateL2Features();
 });
