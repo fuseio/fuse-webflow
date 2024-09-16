@@ -51,3 +51,11 @@ export function animateHeroNumbers() {
     countUp.start();
   }
 }
+
+export function safeExecute(fn) {
+  try {
+    fn();
+  } catch (error) {
+    console.error(`Error in ${fn.name}:`, error);
+  }
+}

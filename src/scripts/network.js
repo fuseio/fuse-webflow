@@ -1,4 +1,4 @@
-import { animateHeroNumbers } from '../utils/helper';
+import { animateHeroNumbers, safeExecute } from '../utils/helper';
 
 function animateSummaryTab() {
   const pills = document.querySelectorAll(".network_summary-pill");
@@ -89,9 +89,10 @@ function animateL2Features() {
   });
 }
 
+
 window.Webflow?.push(async () => {
-  animateSummaryTab();
-  animateRoadmap();
-  animateHeroNumbers();
-  animateL2Features();
+  safeExecute(animateSummaryTab);
+  safeExecute(animateRoadmap);
+  safeExecute(animateHeroNumbers);
+  safeExecute(animateL2Features);
 });

@@ -1,175 +1,175 @@
-import { animateHeroNumbers } from '../utils/helper';
+import { animateHeroNumbers, safeExecute } from '../utils/helper';
 
-$(function () {
-  function initInfiniteSlide() {
-    $(".marquee_track").infiniteslide({
-      pauseonhover: false,
-      speed: 35,
-    });
-  }
-  initInfiniteSlide();
+function initInfiniteSlide() {
+  $(".marquee_track").infiniteslide({
+    pauseonhover: false,
+    speed: 35,
+  });
+}
 
-  function initTestimonialsSwiper() {
-    new Swiper("#home-testimonials", {
-      slidesPerView: 1.2,
-      spaceBetween: 40,
-      loop: true,
-      grabCursor: true,
-      autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-      },
-    });
-  }
-  initTestimonialsSwiper();
+function initTestimonialsSwiper() {
+  new Swiper("#home-testimonials", {
+    slidesPerView: 1.2,
+    spaceBetween: 40,
+    loop: true,
+    grabCursor: true,
+    autoplay: {
+      delay: 4000,
+      disableOnInteraction: false,
+    },
+  });
+}
 
-  function initGA4ButtonEvents() {
-    $("button").click(function () {
-      if ($(this).data("event-name") !== undefined) {
-        ga("send", "event", "button", "click", $(this).data("event-name"));
-      }
-    });
-  }
-  initGA4ButtonEvents();
-
-  // Function to fetch data from a given URL
-  const fetchData = async (url) => {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return await response.json();
-    } catch (error) {
-      console.error("Error fetching data:", error);
+function initGA4ButtonEvents() {
+  $("button").click(function () {
+    if ($(this).data("event-name") !== undefined) {
+      ga("send", "event", "button", "click", $(this).data("event-name"));
     }
+  });
+}
+
+// Function to fetch data from a given URL
+const fetchData = async (url) => {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+async function getBlogPosts() {
+  const urlOfWebsite = "news.fuse.io";
+  const apiURL = `https://${urlOfWebsite}/wp-json/wp/v2/posts?per_page=8`;
+
+  try {
+    const data = await fetchData(apiURL);
+    for (const post of data) {
+      const postTitle = post.title.rendered;
+      const postLink = post.link;
+      const postThumbnail = post.featured_media;
+      const postDate = new Date(post.date).toLocaleDateString();
+
+      let thumbnailURL = "";
+      try {
+        const mediaData = await fetchData(
+          `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`
+        );
+        thumbnailURL = mediaData.source_url;
+      } catch (error) {
+        console.error("Error:", error);
+      }
+
+      $(".swiper-blog .swiper-wrapper").append(`
+          <div class="swiper-slide">
+            <a data-w-id="91356417-96af-cb6c-5320-36a4c9234229" href="${postLink}" target="_blank" class="home-blog w-inline-block">
+              <img src="${thumbnailURL}" loading="lazy" data-w-id="91356417-96af-cb6c-5320-36a4c923422b" alt="${post.title.rendered}" class="home-blog-image">
+              <div class="home-blog-title">
+                <p class="ws-p_16 body_text">${postDate}</p>
+                <p class="ws-p_20 black semibold">${postTitle}</p>
+              </div>
+            </a>
+          </div>
+        `);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+function childObserver(selector = ".section-blog .swiper-wrapper") {
+  const targetNode = document.querySelector(selector);
+  const config = { childList: true };
+
+  const callback = () => {
+    $(".lds-ellipsis").css({ display: "none" });
   };
 
-  async function getBlogPosts() {
-    const urlOfWebsite = "news.fuse.io";
-    const apiURL = `https://${urlOfWebsite}/wp-json/wp/v2/posts?per_page=8`;
+  const observer = new MutationObserver(callback);
+  observer.observe(targetNode, config);
+}
 
-    try {
-      const data = await fetchData(apiURL);
-      for (const post of data) {
-        const postTitle = post.title.rendered;
-        const postLink = post.link;
-        const postThumbnail = post.featured_media;
-        const postDate = new Date(post.date).toLocaleDateString();
+function animateHero() {
+  const heading = document.querySelector(".home_hero-h1");
+  const headingWords = heading.textContent.split(" ");
+  heading.innerHTML = headingWords
+    .map((headingWord) => `<span class="hero-h1-word">${headingWord}</span>`)
+    .join(" ");
 
-        let thumbnailURL = "";
-        try {
-          const mediaData = await fetchData(
-            `https://${urlOfWebsite}/wp-json/wp/v2/media/${postThumbnail}`
-          );
-          thumbnailURL = mediaData.source_url;
-        } catch (error) {
-          console.error("Error:", error);
-        }
+  const description = document.querySelector("#hero-description");
+  const descriptionWords = description.textContent.split(" ");
+  description.innerHTML = descriptionWords
+    .map(
+      (descriptionWord) =>
+        `<span class="hero-description-word">${descriptionWord}</span>`
+    )
+    .join(" ");
 
-        $(".swiper-blog .swiper-wrapper").append(`
-            <div class="swiper-slide">
-              <a data-w-id="91356417-96af-cb6c-5320-36a4c9234229" href="${postLink}" target="_blank" class="home-blog w-inline-block">
-                <img src="${thumbnailURL}" loading="lazy" data-w-id="91356417-96af-cb6c-5320-36a4c923422b" alt="${post.title.rendered}" class="home-blog-image">
-                <div class="home-blog-title">
-                  <p class="ws-p_16 body_text">${postDate}</p>
-                  <p class="ws-p_20 black semibold">${postTitle}</p>
-                </div>
-              </a>
-            </div>
-          `);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-  getBlogPosts();
-
-  function childObserver(selector) {
-    const targetNode = document.querySelector(selector);
-    const config = { childList: true };
-
-    const callback = () => {
-      $(".lds-ellipsis").css({ display: "none" });
-    };
-
-    const observer = new MutationObserver(callback);
-    observer.observe(targetNode, config);
-  }
-  childObserver(".section-blog .swiper-wrapper");
-
-  function animateHero() {
-    const heading = document.querySelector(".home_hero-h1");
-    const headingWords = heading.textContent.split(" ");
-    heading.innerHTML = headingWords
-      .map((headingWord) => `<span class="hero-h1-word">${headingWord}</span>`)
-      .join(" ");
-
-    const description = document.querySelector("#hero-description");
-    const descriptionWords = description.textContent.split(" ");
-    description.innerHTML = descriptionWords
-      .map(
-        (descriptionWord) =>
-          `<span class="hero-description-word">${descriptionWord}</span>`
-      )
-      .join(" ");
-
-    const tl = gsap.timeline();
-    tl.to(".home_hero-logo_wrapper img", {
+  const tl = gsap.timeline();
+  tl.to(".home_hero_logo-slide img", {
+    duration: 0.3,
+    opacity: 1,
+    x: 0,
+    stagger: 0.05,
+  })
+    .to("#hero-logo-title", { duration: 0.3, opacity: 1 }, "<")
+    .to(".home_hero-h1", { duration: 0, opacity: 1 }, "<0.1")
+    .to(".hero-h1-word", {
+      duration: 0.5,
+      opacity: 1,
+      stagger: 0.2,
+    }, "<")
+    .to("#hero-description", { duration: 0, opacity: 1 })
+    .to(".hero-description-word", {
       duration: 0.3,
       opacity: 1,
-      x: 0,
+      y: 0,
       stagger: 0.05,
     })
-      .to("#hero-logo-title", { duration: 0.3, opacity: 1 })
-      .to(".home_hero-h1", { duration: 0, opacity: 1 })
-      .to(".hero-h1-word", {
-        duration: 0.5,
-        opacity: 1,
-        stagger: 0.2,
-      })
-      .to("#hero-description", { duration: 0, opacity: 1 })
-      .to(".hero-description-word", {
-        duration: 0.3,
-        opacity: 1,
-        y: 0,
-        stagger: 0.05,
-      })
-      .to(".home-hero-button-wrap", {
-        duration: 0.3,
-        opacity: 1,
-        y: 0,
-        stagger: 0.1,
-      })
-      .to(".home-hero-announcement", {
-        duration: 0.3,
-        opacity: 1,
-        y: 0,
-        stagger: 0.1,
-      });
-  }
-  animateHero();
-
-  function initHighlightSwiper() {
-    new Swiper("#home-highlight-swiper", {
-      slidesPerView: 1,
-      loop: true,
-      grabCursor: true,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-      },
-      navigation: {
-        nextEl: "#home-highlight-right",
-        prevEl: "#home-highlight-left",
-      },
-      pagination: {
-      	el: "#home-highlight-pagination",
-        clickable: true,
-      },
+    .to(".home-hero-button-wrap", {
+      duration: 0.3,
+      opacity: 1,
+      y: 0,
+      stagger: 0.1,
+    })
+    .to(".home-hero-announcement", {
+      duration: 0.3,
+      opacity: 1,
+      y: 0,
+      stagger: 0.1,
     });
-  }
-  initHighlightSwiper();
+}
 
-  animateHeroNumbers();
+function initHighlightSwiper() {
+  new Swiper("#home-highlight-swiper", {
+    slidesPerView: 1,
+    loop: true,
+    grabCursor: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+    },
+    navigation: {
+      nextEl: "#home-highlight-right",
+      prevEl: "#home-highlight-left",
+    },
+    pagination: {
+      el: "#home-highlight-pagination",
+      clickable: true,
+    },
+  });
+}
+
+window.Webflow?.push(async () => {
+  safeExecute(initInfiniteSlide);
+  safeExecute(initTestimonialsSwiper);
+  safeExecute(initGA4ButtonEvents);
+  safeExecute(getBlogPosts);
+  safeExecute(childObserver);
+  safeExecute(animateHero);
+  safeExecute(initHighlightSwiper);
+  safeExecute(animateHeroNumbers);
 });
