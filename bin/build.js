@@ -18,7 +18,6 @@ const ENTRY_POINTS = [
   'src/scripts/case-studies/zneakrz.js',
   'src/styles/main.css',
   'src/styles/home.css',
-  'src/styles/manifesto.css',
 ];
 
 // Config dev serving
