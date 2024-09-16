@@ -1,12 +1,14 @@
+/* ANIMATE HERO START */
+
 .home_hero-h1,
 #hero-description,
 .hero-h1-word,
 #hero-logo-title,
-.home_hero-logo_wrapper img {
+.home_hero_logo-slide img {
   opacity: 0;
 }
 
-.home_hero-logo_wrapper img {
+.home_hero_logo-slide img {
   transform: translateX(-20px);
 }
 
@@ -22,6 +24,49 @@
   display: inline-block;
 }
 
+/* ANIMATE HERO END */
+
 .operator_content:hover p {
   color: var(--gray-900);
 }
+
+/* ANIMATE HERO LOGO SLIDE START */
+
+@keyframes heroLogoSlide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.home_hero_logo_slide-wrapper:before,
+.home_hero_logo_slide-wrapper:after {
+  position: absolute;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+  content: "";
+  z-index: 2;
+}
+
+.home_hero_logo_slide-wrapper:before {
+  left: 0;
+  background: linear-gradient(to left, #96f0a400, #96f0a4);
+}
+
+.home_hero_logo_slide-wrapper:after {
+  right: 0;
+  background: linear-gradient(to right, #96f0a400, #96f0a4);
+}
+
+.home_hero_logo-slide {
+  animation: 35s heroLogoSlide infinite linear;
+}
+
+.home_hero_logo-slide img {
+  margin: 0 2rem;
+}
+
+/* ANIMATE HERO LOGO SLIDE END */
