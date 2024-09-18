@@ -1,0 +1,13 @@
+html, body {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+section {
+  scroll-snap-align: start;
+}
+
+.w--current .manifesto_changer-bullet {
+  width: 0.8rem;
+  height: 0.8rem;
+}

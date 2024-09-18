@@ -15,9 +15,15 @@ const ENTRY_POINTS = [
   'src/scripts/operator-grant-program.js',
   'src/scripts/web3-business-grant-program.js',
   'src/scripts/network.js',
+  'src/scripts/manifesto.js',
+  'src/scripts/case-studies/bitazza.js',
   'src/scripts/case-studies/zneakrz.js',
+  'src/scripts/case-studies/freedom.js',
+  'src/scripts/case-studies/mystic-valley.js',
+  'src/scripts/case-studies/sanduk.js',
   'src/styles/main.css',
   'src/styles/home.css',
+  'src/styles/manifesto.css',
 ];
 
 // Config dev serving
