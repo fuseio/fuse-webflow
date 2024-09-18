@@ -1,4 +1,4 @@
-import { animateHeroNumbers, safeExecute } from '../utils/helper';
+import { safeExecute, animateHeroNumbers, initSwiperBlog } from '../utils/helper';
 
 function initInfiniteSlide() {
   $(".marquee_track").infiniteslide({
