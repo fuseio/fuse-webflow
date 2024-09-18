@@ -1,7 +1,9 @@
-$(function () {
+import { safeExecute, initSwiperBlog, moreSuccessStories } from "../../utils/helper";
+
+function initModalVideoControl() {
   const modalElement = document.querySelector(".modal");
 
-  function stopVideo (element) {
+  function stopVideo(element) {
     const iframe = element.querySelector('iframe');
     const video = element.querySelector('video');
     if (iframe) {
@@ -12,13 +14,13 @@ $(function () {
       video.pause();
     }
   };
-  
+
   function checkModalToggle(element) {
     const config = { attributes: true, attributeFilter: ["style"] };
 
     const callback = (mutationList) => {
       for (const _ of mutationList) {
-        if(element.style.display === "none") {
+        if (element.style.display === "none") {
           stopVideo(element);
         }
       }
@@ -28,4 +30,10 @@ $(function () {
     observer.observe(element, config);
   };
   checkModalToggle(modalElement);
+}
+
+window.Webflow?.push(async () => {
+  safeExecute(initModalVideoControl);
+  safeExecute(initSwiperBlog);
+  safeExecute(moreSuccessStories);
 });

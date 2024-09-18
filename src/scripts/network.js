@@ -89,7 +89,6 @@ function animateL2Features() {
   });
 }
 
-
 window.Webflow?.push(async () => {
   safeExecute(animateSummaryTab);
   safeExecute(animateRoadmap);
