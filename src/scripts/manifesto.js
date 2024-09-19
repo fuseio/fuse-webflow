@@ -1,10 +1,16 @@
-import { safeExecute } from '../utils/helper';
+import { safeExecute, tableOfContent } from '../utils/helper';
 
 function animateHeroImages() {
   const imageMap = {
     'manifesto': 'https://cdn.prod.website-files.com/63a6d0820bd1f472b4150067/66e7e4242ca153c065ee7e30_Illustration.svg',
     'broken': 'https://cdn.prod.website-files.com/63a6d0820bd1f472b4150067/66ea8c81638f6de7259703b6_Illustration.svg',
   };
+
+  // Preload images
+  Object.values(imageMap).forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
 
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
@@ -40,4 +46,8 @@ function animateHeroImages() {
 
 window.Webflow?.push(async () => {
   safeExecute(animateHeroImages);
+  safeExecute(
+    tableOfContent,
+    document.querySelector(".table_of_content .manifesto_changer-sidebar")
+  );
 });

@@ -1,0 +1,7 @@
+.table_of_content .sidebar_nav-link.w--current {
+	color: white;
+}
+
+.table_of_content .sidebar_nav-link_dot {
+	background: white;
+}
