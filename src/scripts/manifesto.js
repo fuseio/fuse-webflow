@@ -44,10 +44,33 @@ function animateHeroImages() {
   }
 }
 
+function scrollSubtableSectionIntoView() {
+  const subtableLinks = document.querySelectorAll('.manifesto_changer-subtable .manifesto_change_table-link');
+  
+  subtableLinks.forEach(subtableLink => {
+    subtableLink.addEventListener('click', (e) => {
+      const sectionId = subtableLink.dataset.link;
+      const targetSection = document.getElementById(sectionId);
+      
+      if (targetSection) {
+        Array.from(targetSection.parentElement.children).forEach(section => {
+          section.style.scrollMarginTop = '0px';
+          section.style.fontWeight = 'normal';
+        });
+        targetSection.style.scrollMarginTop = '8rem';
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+        targetSection.style.fontWeight = 'bold';
+      }
+
+      return false;
+    });
+  });
+}
 window.Webflow?.push(async () => {
   safeExecute(animateHeroImages);
   safeExecute(
     tableOfContent,
     document.querySelector(".table_of_content .manifesto_changer-sidebar")
   );
+  safeExecute(scrollSubtableSectionIntoView);
 });
