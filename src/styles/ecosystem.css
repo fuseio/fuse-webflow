@@ -1,0 +1,73 @@
+:root {
+  --swiper-pagination-color: #b4f9ba;
+  --swiper-pagination-bullet-size: 16px;
+  --swiper-pagination-bullet-inactive-color: #cccccc;
+}
+
+.container.is-ecosystem-featured-container {
+  max-width: calc(70rem - 40px);
+}
+
+@media (min-width: 1440px) {
+  .container.is-ecosystem-featured-container {
+    max-width: calc(78rem - 40px);
+  }
+}
+
+@media (min-width: 1600px) {
+  .container.is-ecosystem-featured-container {
+    max-width: calc(84rem - 40px);
+  }
+}
+
+.ecosystem_filters-search {
+  margin-left: 20px;
+}
+
+.ecosystem_filters-tags {
+  margin-right: 20px;
+}
+
+.ecosystem_form_logo-label {
+  grid-column-gap: .5rem;
+  grid-row-gap: .5rem;
+  background-color: var(--white);
+  border-radius: 10000px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  font-size: 14px;
+  line-height: 1.42857;
+  font-weight: 400;
+}
+
+input[required]+label {
+  position: absolute;
+  /* 1.5rem padding left, 30px icon width, 0.5rem gap, 12px input padding */
+  left: calc(1.5rem + 30px + 0.5rem + 12px);
+}
+
+
+input[required]+label:after {
+  content: '*';
+  color: red;
+}
+
+input[required]:placeholder-shown+label {
+  display: inline-block;
+}
+
+#ecosystem-project-description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+@media screen and (max-width: 1280px) and (min-width: 992px) {
+  .ecosystem-project-badges {
+    flex-direction: column;
+  }
+}
