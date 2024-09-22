@@ -1,4 +1,4 @@
-import { animateHeroNumbers, safeExecute } from '../utils/helper';
+import { animateHeroNumbers, safeExecute, animateJoinImage } from '../utils/helper';
 
 function animateSummaryTab() {
   const pills = document.querySelectorAll(".network_summary-pill");
@@ -94,4 +94,5 @@ window.Webflow?.push(async () => {
   safeExecute(animateRoadmap);
   safeExecute(animateHeroNumbers);
   safeExecute(animateL2Features);
+  safeExecute(animateJoinImage);
 });

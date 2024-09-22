@@ -1,4 +1,4 @@
-import { safeExecute, initTippy } from "../utils/helper";
+import { safeExecute, initTippy, animateJoinImage } from "../utils/helper";
 
 function navMenu() {
   // get elements
@@ -377,20 +377,6 @@ function newsletterPopup() {
       ticking = true;
     }
   });
-}
-
-function animateJoinImage() {
-  const leftImages = $(".join-image-wrapper.left");
-  const rightImages = $(".join-image-wrapper.right");
-  leftImages.css({ left: "-25%" });
-  rightImages.css({ right: "-25%" });
-
-  const totalImages = 12;
-  let decimal = 0.25;
-  for (let i = 1; i <= totalImages; i++) {
-    const currDelay = i * decimal;
-    $(`.join-image_${i}`).css("animation-delay", `${currDelay}s`);
-  }
 }
 
 window.Webflow?.push(async () => {
