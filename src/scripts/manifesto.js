@@ -45,20 +45,36 @@ function animateHeroImages() {
 }
 
 function scrollSubtableSectionIntoView() {
+  const links = document.querySelectorAll('.manifesto_change_table-link');
+  const subtableBullets = document.querySelectorAll('.manifesto_changer-subtable .manifesto_changer-bullet');
+  const subSections = document.querySelectorAll('.manifesto_changer-content li');
   const subtableLinks = document.querySelectorAll('.manifesto_changer-subtable .manifesto_change_table-link');
-  
+
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      subtableBullets.forEach(subtableBullet => {
+        subtableBullet.style.minWidth = '0';
+        subtableBullet.style.height = '0';
+      });
+
+      subSections.forEach(subSection => {
+        subSection.style.scrollMarginTop = '0px';
+        subSection.style.fontWeight = 'normal';
+      });
+    });
+  });
+
   subtableLinks.forEach(subtableLink => {
-    subtableLink.addEventListener('click', (e) => {
+    subtableLink.addEventListener('click', () => {
       const sectionId = subtableLink.dataset.link;
       const targetSection = document.getElementById(sectionId);
       
       if (targetSection) {
-        Array.from(targetSection.parentElement.children).forEach(section => {
-          section.style.scrollMarginTop = '0px';
-          section.style.fontWeight = 'normal';
-        });
+        subtableLink.querySelector('.manifesto_changer-bullet').style.minWidth = '0.8rem';
+        subtableLink.querySelector('.manifesto_changer-bullet').style.height = '0.8rem';
+
         targetSection.style.scrollMarginTop = '8rem';
-        targetSection.scrollIntoView({ behavior: 'smooth' });
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
         targetSection.style.fontWeight = 'bold';
       }
 
@@ -66,6 +82,7 @@ function scrollSubtableSectionIntoView() {
     });
   });
 }
+
 window.Webflow?.push(async () => {
   safeExecute(animateHeroImages);
   safeExecute(
