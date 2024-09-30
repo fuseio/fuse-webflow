@@ -2,8 +2,8 @@ import { safeExecute, tableOfContent } from '../utils/helper';
 
 function animateHeroImages() {
   const imageMap = {
-    'manifesto': 'https://cdn.prod.website-files.com/63a6d0820bd1f472b4150067/66e7e4242ca153c065ee7e30_Illustration.svg',
     'broken': 'https://cdn.prod.website-files.com/63a6d0820bd1f472b4150067/66ea8c81638f6de7259703b6_Illustration.svg',
+    'web3': 'https://cdn.prod.website-files.com/63a6d0820bd1f472b4150067/66fa78ca06c7344f4bc35228_Illustration.svg',
   };
 
   // Preload images
@@ -19,7 +19,7 @@ function animateHeroImages() {
       const target = mutation.target;
       if (!target.classList.contains('manifesto_hero-bullet') || !target.classList.contains('w--current')) return;
 
-      const sectionId = target.getAttribute('href').substring(1);
+      const sectionId = target.dataset.to;
       const newImageUrl = imageMap[sectionId];
       if (!newImageUrl) return;
 
@@ -37,57 +37,93 @@ function animateHeroImages() {
   });
 
   const bulletContainers = document.querySelectorAll('.manifesto_hero-bullet');
-  if (bulletContainers) {
-    bulletContainers.forEach((container) => {
-      observer.observe(container, { attributes: true, subtree: true, attributeFilter: ['class'] });
+  bulletContainers.forEach((container) => {
+    observer.observe(container, { attributes: true, attributeFilter: ['class'] });
+  });
+}
+
+function intersectSection() {
+  const sections = document.querySelectorAll('.manifesto_detail, .manifesto_hero_header-wrapper');
+  const bullets = document.querySelectorAll('.manifesto_hero-bullet');
+  const tableLinks = document.querySelectorAll('.manifesto_change_table-link');
+  
+  function checkVisibility() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      const id = section.id;
+
+      if (section.classList.contains('manifesto_hero_header-wrapper')) {
+        if (rect.top < 0 || rect.top > 100) return;
+        updateElements(id);
+        return;
+      }
+
+      // 5.5rem = 88px, 10px threshold
+      if (Math.abs(rect.top - 88) >= 10) return;
+
+      updateElements(id);
+      section.style.opacity = '1';
+      
+      sections.forEach(otherSection => {
+        if (otherSection === section || !otherSection.classList.contains('manifesto_detail')) return;
+        otherSection.style.opacity = '0.5';
+      });
     });
+  }
+
+  function updateElements(id) {
+    bullets.forEach(bullet => {
+      bullet.classList.toggle('w--current', bullet.dataset.to === id);
+    });
+    tableLinks.forEach(link => {
+      link.classList.toggle('w--current', link.dataset.to === id);
+    });
+  }
+
+  window.addEventListener('scroll', checkVisibility);
+  window.addEventListener('resize', checkVisibility);
+  checkVisibility();
+}
+
+function scrollToSection() {
+  const bullets = document.querySelectorAll('.manifesto_hero-bullet');
+  const tableLinks = document.querySelectorAll('.manifesto_change_table-link');
+  const sections = document.querySelectorAll('.manifesto_detail, .manifesto_hero_header-wrapper');
+
+  const scrollHandler = (e, element) => {
+    e.preventDefault();
+    const id = element.dataset.to;
+    const section = Array.from(sections).find(section => section.id === id);
+    if (section) {
+      const yOffset = -5.5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  bullets.forEach(bullet => {
+    bullet.addEventListener('click', (e) => scrollHandler(e, bullet));
+  });
+
+  tableLinks.forEach(link => {
+    link.addEventListener('click', (e) => scrollHandler(e, link));
+  });
+}
+
+function initWCurrent() {
+  const firstBullet = document.querySelector('.manifesto_hero-bullet');
+  if (firstBullet) {
+    firstBullet.classList.add('w--current');
   }
 }
 
-function scrollSubtableSectionIntoView() {
-  const links = document.querySelectorAll('.manifesto_change_table-link');
-  const subtableBullets = document.querySelectorAll('.manifesto_changer-subtable .manifesto_changer-bullet');
-  const subSections = document.querySelectorAll('.manifesto_changer-content li');
-  const subtableLinks = document.querySelectorAll('.manifesto_changer-subtable .manifesto_change_table-link');
-
-  links.forEach(link => {
-    link.addEventListener('click', () => {
-      subtableBullets.forEach(subtableBullet => {
-        subtableBullet.style.minWidth = '0';
-        subtableBullet.style.height = '0';
-      });
-
-      subSections.forEach(subSection => {
-        subSection.style.scrollMarginTop = '0px';
-        subSection.style.fontWeight = 'normal';
-      });
-    });
-  });
-
-  subtableLinks.forEach(subtableLink => {
-    subtableLink.addEventListener('click', () => {
-      const sectionId = subtableLink.dataset.link;
-      const targetSection = document.getElementById(sectionId);
-      
-      if (targetSection) {
-        subtableLink.querySelector('.manifesto_changer-bullet').style.minWidth = '0.8rem';
-        subtableLink.querySelector('.manifesto_changer-bullet').style.height = '0.8rem';
-
-        targetSection.style.scrollMarginTop = '8rem';
-        targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        targetSection.style.fontWeight = 'bold';
-      }
-
-      return false;
-    });
-  });
-}
-
-window.Webflow?.push(async () => {
+window.Webflow?.push(() => {
+  safeExecute(initWCurrent);
+  safeExecute(intersectSection);
   safeExecute(animateHeroImages);
+  safeExecute(scrollToSection);
   safeExecute(
     tableOfContent,
     document.querySelector(".table_of_content .manifesto_changer-sidebar")
   );
-  safeExecute(scrollSubtableSectionIntoView);
 });
