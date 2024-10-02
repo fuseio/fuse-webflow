@@ -30,36 +30,15 @@ function animateSummaryTab() {
 function animateRoadmap() {
   const progressImage = document.querySelector('.network_roadmap-progress');
   const wrapper = document.querySelector('.network_roadmap_progress-wrapper');
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        window.addEventListener('scroll', onScroll);
-        onScroll();
-      } else {
-        window.removeEventListener('scroll', onScroll);
-      }
-    });
-  }, { 
-    threshold: 0,
-  });
+  const offset = 300;
 
-  observer.observe(wrapper);
-
-  function onScroll() {
-    const wrapperRect = wrapper.getBoundingClientRect();
-    const wrapperTop = wrapperRect.top;
-    const wrapperHeight = wrapperRect.height;
-    const windowHeight = window.innerHeight;
-
-    const scrollProgress = (windowHeight - wrapperTop) / (windowHeight + wrapperHeight);
-    const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
-    
-    const imageHeight = progressImage.offsetHeight;
-    const revealHeight = imageHeight * clampedProgress;
-
-    wrapper.style.height = `${revealHeight}px`;
+  function updateVisibleAmount() {
+    const visibleAmount = Math.max(0, offset - wrapper.getBoundingClientRect().top);
+    wrapper.style.height = `${Math.min(visibleAmount, progressImage.offsetHeight)}px`;
   }
+
+  ['scroll', 'resize'].forEach(event => window.addEventListener(event, updateVisibleAmount));
+  updateVisibleAmount();
 }
 
 function animateL2Features() {
