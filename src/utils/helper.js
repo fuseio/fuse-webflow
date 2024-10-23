@@ -256,3 +256,5 @@ export function animateJoinImage() {
     $(`.join-image_${i}`).css("animation-delay", `${currDelay}s`);
   }
 }
+
+export const isMediumScreen = window.innerWidth > 767;
