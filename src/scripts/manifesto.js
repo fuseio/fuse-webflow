@@ -1,129 +1,170 @@
-import { safeExecute, tableOfContent } from '../utils/helper';
+import { safeExecute, isMediumScreen } from '../utils/helper';
 
-function animateHeroImages() {
-  const imageMap = {
-    'broken': 'https://cdn.prod.website-files.com/63a6d0820bd1f472b4150067/66ea8c81638f6de7259703b6_Illustration.svg',
-    'web3': 'https://cdn.prod.website-files.com/63a6d0820bd1f472b4150067/66fa78ca06c7344f4bc35228_Illustration.svg',
-  };
-
-  // Preload images
-  Object.values(imageMap).forEach(url => {
-    const img = new Image();
-    img.src = url;
-  });
-
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') return;
-
-      const target = mutation.target;
-      if (!target.classList.contains('manifesto_hero-bullet') || !target.classList.contains('w--current')) return;
-
-      const sectionId = target.dataset.to;
-      const newImageUrl = imageMap[sectionId];
-      if (!newImageUrl) return;
-
-      const heroImage = document.querySelector('.manifesto_hero-image');
-      if (!heroImage) return;
-
-      if (heroImage.src === newImageUrl) return;
-
-      heroImage.style.opacity = '0';
-      setTimeout(() => {
-        heroImage.src = newImageUrl;
-        heroImage.style.opacity = '1';
-      }, 300);
-    });
-  });
-
-  const bulletContainers = document.querySelectorAll('.manifesto_hero-bullet');
-  bulletContainers.forEach((container) => {
-    observer.observe(container, { attributes: true, attributeFilter: ['class'] });
-  });
-}
-
-function intersectSection() {
-  const sections = document.querySelectorAll('.manifesto_detail, .manifesto_hero_header-wrapper');
+function animateFundamental() {
+  const box = document.querySelector('.manifesto_box.is-center');
+  const boxLeft = document.querySelector('.manifesto_box.is-left');
+  const boxRight = document.querySelector('.manifesto_box.is-right');
+  const container = box.querySelector('.manifesto_box-container');
+  const sliders = document.querySelectorAll('.manifesto_box-wrapper.is-slider');
+  const fuse = document.querySelector('.manifesto_box-image.is-fuse');
+  const token = document.querySelector('.manifesto_box-image.is-tokens');
+  const titleContainer = document.querySelector('.manifesto_fundamental-title-container');
+  const titleWrapper = document.querySelector('.manifesto_fundamental-title-wrapper');
   const bullets = document.querySelectorAll('.manifesto_hero-bullet');
-  const tableLinks = document.querySelectorAll('.manifesto_change_table-link');
-  
-  function checkVisibility() {
-    sections.forEach(section => {
-      const rect = section.getBoundingClientRect();
-      const id = section.id;
 
-      if (section.classList.contains('manifesto_hero_header-wrapper')) {
-        if (rect.top < 0 || rect.top > 100) return;
-        updateElements(id);
-        return;
-      }
+  const containerWidth = container.getBoundingClientRect().width;
+  const containerHeight = container.getBoundingClientRect().height;
+  let scrollY = 0;
+  let isSideBoxesRevealed = false;
+  let currentBox = 1;
+  const backgroundGradients = {
+    red: 'linear-gradient(#f65d51,#f32f20)',
+    green: 'linear-gradient(180deg, #BAFEC0 0%, #0F8519 100%)'
+  }
 
-      // 5.5rem = 88px, 10px threshold
-      if (Math.abs(rect.top - 88) >= 10) return;
+  const firstScrolled = containerHeight;
+  const secondScrolled = firstScrolled + containerWidth;
+  const thirdScrolled = secondScrolled + containerWidth;
+  const fourthScrolled = thirdScrolled + containerHeight;
+  const fifthScrolled = fourthScrolled + containerHeight;
+  const sixthScrolled = fifthScrolled + window.innerHeight;
+  const scrollMap = {
+    7: sixthScrolled,
+    6: fifthScrolled,
+    5: fourthScrolled,
+    4: thirdScrolled,
+    3: secondScrolled,
+    2: firstScrolled,
+    1: 0
+  };
+  const sortedScrollMap = Object.keys(scrollMap).sort((a, b) => scrollMap[b] - scrollMap[a]);
 
-      updateElements(id);
-      section.style.opacity = '1';
-      
-      sections.forEach(otherSection => {
-        if (otherSection === section || !otherSection.classList.contains('manifesto_detail')) return;
-        otherSection.style.opacity = '0.5';
+  const titleHeight = titleWrapper.getBoundingClientRect().height;
+
+  function disappearSideBoxes() {
+    isSideBoxesRevealed = false;
+
+    boxLeft.style.transform = `rotateY(-15deg) translate(-300%, -50%) scale(0)`;
+    boxRight.style.transform = `rotateY(15deg) translate(250%, -50%) scale(0)`;
+    boxRight.style.left = `0%`;
+  }
+
+  function revealSideBoxes() {
+    if (isSideBoxesRevealed) return;
+    isSideBoxesRevealed = true;
+
+    boxLeft.style.transform = `rotateY(-15deg) translate(-220%, -50%) scale(1)`;
+    boxRight.style.transform = `rotateY(15deg) translate(170%, -50%) scale(1)`;
+    boxRight.style.left = `0%`;
+  }
+
+  function hideSideBoxes() {
+    if (!isSideBoxesRevealed) return;
+    isSideBoxesRevealed = false;
+
+    boxLeft.style.transform = `rotateY(0deg) translate(-50%, -50%) scale(1)`;
+    boxRight.style.transform = `rotateY(0deg) translate(-50%, -50%) scale(1)`;
+    boxRight.style.left = `50%`;
+  }
+
+  function revealTokens() {
+    fuse.style.transform = `translate(-50%, 0%) scale(0.5)`;
+    token.style.transform = `translate(-50%, 1rem) scale(1.2)`;
+  }
+
+  function hideTokens() {
+    fuse.style.transform = `translate(-50%, 0%) scale(1)`;
+    token.style.transform = `translate(-50%, 0%) scale(0)`;
+  }
+
+  function firstVerticalScroll() {
+    if (isMediumScreen) {
+      hideSideBoxes();
+    }
+    sliders.forEach(slider => {
+      slider.style.transform = `translateX(0px)`;
+    });
+    container.style.top = `-${scrollY}px`;
+  }
+
+  function horizontalScroll() {
+    if (isMediumScreen) {
+      revealSideBoxes();
+    }
+    box.style.backgroundImage = backgroundGradients.red;
+    sliders.forEach(slider => {
+      slider.style.transform = `translateX(-${scrollY - firstScrolled}px)`;
+    });
+  }
+
+  function secondVerticalScroll() {
+    if (currentBox >= 6) {
+      revealTokens();
+    } else {
+      hideTokens();
+    }
+    if (isMediumScreen) {
+      disappearSideBoxes();
+    }
+    box.style.backgroundImage = backgroundGradients.green;
+    container.style.top = `-${scrollY - (containerWidth * 2)}px`;
+  }
+
+  function animateImages() {
+    if (currentBox >= 4) {
+      secondVerticalScroll()
+    } else if (currentBox >= 2 && currentBox < 4) {
+      horizontalScroll()
+    } else if (currentBox <= 1) {
+      firstVerticalScroll()
+    }
+  }
+
+  function rotateTitles() {
+    titleContainer.style.top = `-${(currentBox - 1) * titleHeight}px`;
+  }
+
+  function initBullet() {
+    bullets[0].classList.add('w--current');
+  }
+
+  function toggleBullets() {
+    bullets.forEach((bullet, index) => {
+      bullet.classList.toggle('w--current', currentBox === index + 1);
+    });
+  }
+
+  function bulletClick() {
+    bullets.forEach((bullet, index) => {
+      bullet.addEventListener('click', () => {
+        window.scrollTo({
+          top: scrollMap[index + 1],
+          behavior: 'smooth'
+        });
       });
     });
   }
 
-  function updateElements(id) {
-    bullets.forEach(bullet => {
-      bullet.classList.toggle('w--current', bullet.dataset.to === id);
-    });
-    tableLinks.forEach(link => {
-      link.classList.toggle('w--current', link.dataset.to === id);
-    });
-  }
+  function onScroll() {
+    scrollY = window.scrollY;
 
-  window.addEventListener('scroll', checkVisibility);
-  window.addEventListener('resize', checkVisibility);
-  checkVisibility();
-}
-
-function scrollToSection() {
-  const bullets = document.querySelectorAll('.manifesto_hero-bullet');
-  const tableLinks = document.querySelectorAll('.manifesto_change_table-link');
-  const sections = document.querySelectorAll('.manifesto_detail, .manifesto_hero_header-wrapper');
-
-  const scrollHandler = (e, element) => {
-    e.preventDefault();
-    const id = element.dataset.to;
-    const section = Array.from(sections).find(section => section.id === id);
-    if (section) {
-      const yOffset = -5.5 * parseFloat(getComputedStyle(document.documentElement).fontSize);
-      const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+    for (let box of sortedScrollMap) {
+      if (scrollY >= scrollMap[box]) {
+        currentBox = parseInt(box);
+        break;
+      }
     }
-  };
 
-  bullets.forEach(bullet => {
-    bullet.addEventListener('click', (e) => scrollHandler(e, bullet));
-  });
-
-  tableLinks.forEach(link => {
-    link.addEventListener('click', (e) => scrollHandler(e, link));
-  });
-}
-
-function initWCurrent() {
-  const firstBullet = document.querySelector('.manifesto_hero-bullet');
-  if (firstBullet) {
-    firstBullet.classList.add('w--current');
+    animateImages()
+    rotateTitles()
+    toggleBullets()
   }
+
+  initBullet()
+  bulletClick()
+  window.addEventListener('scroll', onScroll);
 }
 
 window.Webflow?.push(() => {
-  safeExecute(initWCurrent);
-  safeExecute(intersectSection);
-  safeExecute(animateHeroImages);
-  safeExecute(scrollToSection);
-  safeExecute(
-    tableOfContent,
-    document.querySelector(".table_of_content .manifesto_changer-sidebar")
-  );
+  safeExecute(animateFundamental);
 });

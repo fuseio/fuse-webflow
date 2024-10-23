@@ -23,7 +23,6 @@ const ENTRY_POINTS = [
   'src/scripts/case-studies/sanduk.js',
   'src/styles/main.css',
   'src/styles/home.css',
-  'src/styles/manifesto.css',
   'src/styles/glossary.css',
   'src/styles/ecosystem.css',
 ];
