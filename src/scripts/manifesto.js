@@ -17,6 +17,7 @@ function animateFundamental() {
   let scrollY = 0;
   let isSideBoxesRevealed = false;
   let currentBox = 1;
+  let inBetweenBox = 1;
   const backgroundGradients = {
     red: 'linear-gradient(#f65d51,#f32f20)',
     green: 'linear-gradient(180deg, #BAFEC0 0%, #0F8519 100%)'
@@ -37,6 +38,16 @@ function animateFundamental() {
     2: firstScrolled,
     1: 0
   };
+  const inBetweenScrollMap = {
+    7: sixthScrolled,
+    6: fifthScrolled - (containerHeight / 2),
+    5: fourthScrolled - (containerHeight / 2),
+    4: thirdScrolled - (containerWidth / 2),
+    3: secondScrolled - (containerWidth / 2),
+    2: firstScrolled - (containerHeight / 2),
+    1: 0
+  }
+  const sortedInBetweenScrollMap = Object.keys(inBetweenScrollMap).sort((a, b) => inBetweenScrollMap[b] - inBetweenScrollMap[a]);
   const sortedScrollMap = Object.keys(scrollMap).sort((a, b) => scrollMap[b] - scrollMap[a]);
 
   const titleHeight = titleWrapper.getBoundingClientRect().height;
@@ -91,7 +102,6 @@ function animateFundamental() {
     if (isMediumScreen) {
       revealSideBoxes();
     }
-    box.style.backgroundImage = backgroundGradients.red;
     sliders.forEach(slider => {
       slider.style.transform = `translateX(-${scrollY - firstScrolled}px)`;
     });
@@ -106,7 +116,11 @@ function animateFundamental() {
     if (isMediumScreen) {
       disappearSideBoxes();
     }
-    box.style.backgroundImage = backgroundGradients.green;
+    if(inBetweenBox >= 5) {
+      box.style.backgroundImage = backgroundGradients.green;
+    } else {
+      box.style.backgroundImage = backgroundGradients.red;
+    }
     container.style.top = `-${scrollY - (containerWidth * 2)}px`;
   }
 
@@ -121,7 +135,7 @@ function animateFundamental() {
   }
 
   function rotateTitles() {
-    titleContainer.style.top = `-${(currentBox - 1) * titleHeight}px`;
+    titleContainer.style.top = `-${(inBetweenBox - 1) * titleHeight}px`;
   }
 
   function initBullet() {
@@ -130,7 +144,7 @@ function animateFundamental() {
 
   function toggleBullets() {
     bullets.forEach((bullet, index) => {
-      bullet.classList.toggle('w--current', currentBox === index + 1);
+      bullet.classList.toggle('w--current', inBetweenBox === index + 1);
     });
   }
 
@@ -145,12 +159,46 @@ function animateFundamental() {
     });
   }
 
+  const scroll = {
+    scrollBarWidth: window.innerWidth - document.body.clientWidth,
+  
+    disable() {
+      document.body.style.marginRight = `${this.scrollBarWidth}px`;
+      document.body.style.overflowY = 'hidden';
+    },
+    enable() {
+      document.body.style.marginRight = null;
+      document.body.style.overflowY = null;
+    },
+  };
+
   function onScroll() {
     scrollY = window.scrollY;
+
+    let previousBox = currentBox;
+    let timeoutId;
 
     for (let box of sortedScrollMap) {
       if (scrollY >= scrollMap[box]) {
         currentBox = parseInt(box);
+
+        if (previousBox !== currentBox && currentBox < 6) {
+          previousBox = currentBox;
+
+          scroll.disable();
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            scroll.enable();
+          }, 200);
+        }
+
+        break;
+      }
+    }
+
+    for (let box of sortedInBetweenScrollMap) {
+      if (scrollY >= inBetweenScrollMap[box]) {
+        inBetweenBox = parseInt(box);
         break;
       }
     }
