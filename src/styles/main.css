@@ -424,7 +424,7 @@ a:hover .link-arrow {
   position: absolute;
   inset: 0;
   border-radius: 10rem;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   background: linear-gradient(140deg, #04C815 0, #012A04 100%) border-box;
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
