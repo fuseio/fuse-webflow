@@ -1,0 +1,50 @@
+/* ANIMATE PARTNER LOGO SLIDE START */
+
+@keyframes partnerLogoSlide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.node_partner_slide-wrapper:before,
+.node_partner_slide-wrapper:after {
+  position: absolute;
+  top: 0;
+  width: 2rem;
+  height: 100%;
+  content: "";
+  z-index: 2;
+}
+
+.node_partner_slide-wrapper:before {
+  left: 0;
+  background: linear-gradient(to left, #96f0a400, #f3f3f3);
+}
+
+.node_partner_slide-wrapper:after {
+  right: 0;
+  background: linear-gradient(to right, #96f0a400, #f3f3f3);
+}
+
+.node_partner-slide {
+  animation: 35s partnerLogoSlide infinite linear;
+}
+
+.node_partner-slide img {
+  margin: 0 2rem;
+}
+
+/* ANIMATE PARTNER LOGO SLIDE END */
+
+.node_plan-link:hover .node_plan-arrow:first-child {
+  top: -10%;
+  left: 118%;
+}
+
+.node_plan-link:hover .node_plan-arrow:last-child {
+  top: 50%;
+  left: 50%;
+}
