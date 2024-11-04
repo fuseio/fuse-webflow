@@ -26,6 +26,7 @@ const ENTRY_POINTS = [
   'src/styles/glossary.css',
   'src/styles/ecosystem.css',
   'src/styles/node-sale.css',
+  'src/styles/manifesto.css',
 ];
 
 // Config dev serving
