@@ -4,10 +4,10 @@
 
 #network .manifesto_essential-content:before {
   content: url("https://cdn.prod.website-files.com/63a6d0820bd1f472b4150067/6728ebae511af817104dcc32_Network.svg");
-  width: 1076px;
-  height: 704px;
+  width: 882px;
+  height: 578px;
   position: absolute;
-  top: 40%;
-  left: 70%;
+  top: 30%;
+  left: 50%;
   transform: translate(-50%, -50%);
 }
