@@ -1,5 +1,30 @@
-.manifesto_body .navbar .menu_dp-link-only {
+@media screen and (min-width: 992px) {
+  .manifesto_body .navbar .menu_dp-link-only {
+    filter: invert(1);
+    color: var(--pale-green);
+  }
+}
+
+.manifesto_body .navbar .menu_dp-link-only:before {
+  display: none;
+}
+
+.manifesto_body .navbar .menu_dp-link-only div {
+  position: relative;
+  left: 12px;
+}
+
+.manifesto_body .navbar .menu_dp-link-only div:before {
+  content: url("https://cdn.prod.website-files.com/63a6d0820bd1f472b4150067/672b33e31ee7d7d459bf0899_Ember.svg");
+  position: absolute;
+  left: -24px;
   filter: invert(1);
+}
+
+@media screen and (min-width: 992px) {
+  .manifesto_body .navbar .menu_dp-link-only div:before {
+    filter: invert(0);
+  }
 }
 
 #network .manifesto_essential-content:before {
@@ -10,4 +35,13 @@
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+html, body {
+  scroll-snap-type: y mandatory;
+}
+
+section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
