@@ -37,11 +37,26 @@
   transform: translate(-50%, -50%);
 }
 
-html, body {
+html,
+body {
   scroll-snap-type: y mandatory;
+
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+html::-webkit-scrollbar {
+  width: 1px;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: transparent;
 }
 
 section {
   scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
