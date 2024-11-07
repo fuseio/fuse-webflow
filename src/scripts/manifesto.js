@@ -8,6 +8,8 @@ function fullPageScroll() {
   let animating = false;
   let delay = 0
 
+  const bullets = document.querySelectorAll('.manifesto_hero-bullet');
+
   function gotoSection(index) {
     if (index < 0 || index >= sections.length || animating || !sections[index] || Date.now() - delay < 400) return;
 
@@ -34,6 +36,10 @@ function fullPageScroll() {
   });
 
   gotoSection(0);
+
+  bullets.forEach((bullet, index) => {
+    bullet.addEventListener('click', () => currentIndex = index);
+  });
 }
 
 window.Webflow?.push(() => {
