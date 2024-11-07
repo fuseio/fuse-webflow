@@ -39,8 +39,6 @@
 
 html,
 body {
-  scroll-snap-type: y mandatory;
-
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
 }
@@ -55,8 +53,4 @@ html::-webkit-scrollbar-track {
 
 html::-webkit-scrollbar-thumb {
   background-color: transparent;
-}
-
-section {
-  scroll-snap-align: start;
 }
