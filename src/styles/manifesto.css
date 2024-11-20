@@ -12,6 +12,11 @@
 .manifesto_body .navbar .menu_dp-link-only div {
   position: relative;
   left: 12px;
+  transition: opacity 0.2s ease;
+}
+
+.manifesto_body .navbar .menu_dp-link-only div:hover {
+  opacity: 0.7;
 }
 
 .manifesto_body .navbar .menu_dp-link-only div:before {
