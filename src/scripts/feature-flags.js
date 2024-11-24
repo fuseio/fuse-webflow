@@ -22,7 +22,7 @@ function hideLayer3InHomePage() {
   const isHomePage = window.location.pathname === "/";
   if (!isHomePage) return;
 
-  document.querySelector(".section_layer3").style.visibility = "hidden";
+  document.querySelector(".section_layer3").style.display = "none";
 }
 
 window.Webflow?.push(() => {
