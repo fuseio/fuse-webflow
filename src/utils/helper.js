@@ -258,3 +258,5 @@ export function animateJoinImage() {
 }
 
 export const isMediumScreen = window.innerWidth > 767;
+
+export const isProduction = window.location.host.includes("fuse.io");

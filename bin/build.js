@@ -16,6 +16,7 @@ const ENTRY_POINTS = [
   'src/scripts/web3-business-grant-program.js',
   'src/scripts/network.js',
   'src/scripts/manifesto.js',
+  'src/scripts/feature-flags.js',
   'src/scripts/case-studies/bitazza.js',
   'src/scripts/case-studies/zneakrz.js',
   'src/scripts/case-studies/freedom.js',
