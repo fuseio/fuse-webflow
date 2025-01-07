@@ -27,6 +27,7 @@ export function animateHeroNumbers() {
         endVal: 9000,
         decimalPlaces: 0,
         duration: 2,
+        separator: '',
       },
     },
     {
