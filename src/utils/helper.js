@@ -24,8 +24,8 @@ export function animateHeroNumbers() {
       target: document.querySelector("#uptime-digit"),
       defaults: {
         startVal: 0,
-        endVal: 99.99,
-        decimalPlaces: 2,
+        endVal: 9000,
+        decimalPlaces: 0,
         duration: 2,
       },
     },
