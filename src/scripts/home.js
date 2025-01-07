@@ -170,96 +170,6 @@ function initHighlightSwiper() {
   });
 }
 
-function becomeAnOperatorHubSpotForm() {
-  hbspt.forms.create({
-    region: "eu1",
-    portalId: "25596428",
-    formId: "af52d829-753a-4dfc-9731-88dceec23bdc",
-    target: ".hbspt-form",
-    onFormReady: function ($form, e) {
-      const utilizeSelector =
-        'input[name="how_partnering_with_fuse_utilize_your_project_"]';
-      const MIN_LENGTH_UTILIZE = 30;
-      const largeDevice = window.matchMedia("(min-width: 992px)").matches;
-
-      function errorMessage(element) {
-        $(
-          '<ul class="no-list hs-error-msgs inputs-list" role="alert"><li><label class="hs-error-msg hs-main-font-element">Minimum 30 characters are required.</label></li></ul>'
-        ).insertAfter($(element).parent());
-      }
-
-      $(".hbspt-form fieldset").each(function (index) {
-        if ($(this).text().includes("utm_")) {
-          $(this).css("display", "none");
-        }
-      });
-
-      $("<img />", {
-        src: largeDevice
-          ? "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/64da462e2ea93c58bc64fc9d_Frame%201000005457.svg"
-          : "https://uploads-ssl.webflow.com/63a6d0820bd1f472b4150067/6550bb8609a9b72b15dfb3a3_Frame%201000005457.svg"
-      }).appendTo($(".hbspt-form"));
-
-      $('<p class="hbspt-form-title">Become an Operator</p>').prependTo(
-        $(".hs-form")
-      );
-
-      $(".multi-container").each(function (index) {
-        if ($(this).children().length === 2) {
-          $(this).children().addClass("hs-form-radio-icon");
-        }
-      });
-
-      $(".hs-form-field").each(function (index) {
-        if ($(this).children().first().find("span").length === 1) {
-          $("<span>(Optional)</span>").appendTo($(this).children().first());
-        }
-      });
-
-      $(utilizeSelector).focusin(function () {
-        const inputLen = $(this).val().length;
-        const ul = $(this).parent().parent().find("ul");
-
-        if (inputLen >= 1 && inputLen < MIN_LENGTH_UTILIZE && ul.length) {
-          ul.remove();
-        }
-      });
-
-      $(utilizeSelector).focusout(function () {
-        const inputLen = $(this).val().length;
-        const ul = $(this).parent().parent().find("ul");
-
-        if (inputLen >= MIN_LENGTH_UTILIZE && ul.length) {
-          ul.remove();
-        } else if (
-          inputLen >= 1 &&
-          inputLen < MIN_LENGTH_UTILIZE &&
-          !ul.length
-        ) {
-          errorMessage(this);
-        }
-      });
-
-      document.querySelector(".hs-button").addEventListener(
-        "click",
-        function (event) {
-          const inputLen = $(utilizeSelector).val().length;
-          const ul = $(utilizeSelector).parent().parent().find("ul");
-
-          if (inputLen < MIN_LENGTH_UTILIZE) {
-            event.preventDefault();
-          }
-
-          if (inputLen >= 1 && inputLen < MIN_LENGTH_UTILIZE && !ul.length) {
-            errorMessage($(utilizeSelector));
-          }
-        },
-        false
-      );
-    }
-  });
-}
-
 function initCarouselBannerSwiper() {
   new Swiper("#home-carousel_banner-swiper", {
     slidesPerView: 1,
@@ -305,7 +215,6 @@ window.Webflow?.push(async () => {
   safeExecute(animateHero);
   safeExecute(initHighlightSwiper);
   safeExecute(animateHeroNumbers);
-  // safeExecute(becomeAnOperatorHubSpotForm);
   safeExecute(initCarouselBannerSwiper);
   safeExecute(initCaseSwiper);
 });
