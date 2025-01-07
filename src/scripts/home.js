@@ -170,6 +170,42 @@ function initHighlightSwiper() {
   });
 }
 
+function initCarouselBannerSwiper() {
+  new Swiper("#home-carousel_banner-swiper", {
+    slidesPerView: 1,
+    loop: true,
+    grabCursor: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+    },
+    navigation: {
+      nextEl: "#home_carousel_banner-right",
+      prevEl: "#home-carousel_banner-left",
+    },
+    pagination: {
+      el: "#home-carousel_banner-pagination",
+      clickable: true,
+    },
+  });
+}
+
+function initCaseSwiper() {
+  new Swiper("#case-swiper", {
+    slidesPerView: 1,
+    loop: true,
+    grabCursor: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+    },
+    navigation: {
+      nextEl: "#case_slide-right",
+      prevEl: "#case_slide-left",
+    },
+  });
+}
+
 window.Webflow?.push(async () => {
   safeExecute(initInfiniteSlide);
   safeExecute(initTestimonialsSwiper);
@@ -179,4 +215,6 @@ window.Webflow?.push(async () => {
   safeExecute(animateHero);
   safeExecute(initHighlightSwiper);
   safeExecute(animateHeroNumbers);
+  safeExecute(initCarouselBannerSwiper);
+  safeExecute(initCaseSwiper);
 });
