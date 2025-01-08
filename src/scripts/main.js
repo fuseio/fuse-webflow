@@ -211,7 +211,7 @@ function navMenu() {
     });
   }
   subnav(community, communityWrapper, socials, "community", "socials");
-  subnav(caseStudy, caseStudyWrapper, caseStudies, "caseStudy", "caseStudies", true);
+  subnav(caseStudy, caseStudyWrapper, caseStudies, "caseStudy", "caseStudies");
 }
 
 function submitHubspotForm({ form, email, success, error }) {
