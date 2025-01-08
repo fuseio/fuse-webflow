@@ -17,7 +17,8 @@ function navMenu() {
 
   const menuBGOffset = 3;
   const isLandingPage =
-    !window.location.pathname || window.location.pathname === "/";
+    window.location.pathname === "/" ||
+    window.location.pathname.includes("/home");
 
   gsap.defaults({
     duration: 0.4,
