@@ -11,6 +11,9 @@ function navMenu() {
   let community = $("#dropdown_menu-link-community");
   let socials = $("#dropdown_menu-socials");
   let dropdownMenuLinkIconClass = ".dropdown_menu-link_icon";
+  const caseStudyWrapper = $("#dropdown_menu-case_study");
+  const caseStudy = $("#dropdown_menu-link-case_study");
+  const caseStudies = $("#dropdown_menu-case_studies");
 
   const menuBGOffset = 3;
   const isLandingPage =
@@ -207,6 +210,7 @@ function navMenu() {
     });
   }
   subnav(community, communityWrapper, socials, "community", "socials");
+  subnav(caseStudy, caseStudyWrapper, caseStudies, "caseStudy", "caseStudies", true);
 }
 
 function submitHubspotForm({ form, email, success, error }) {
