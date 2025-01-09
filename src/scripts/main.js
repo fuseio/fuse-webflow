@@ -16,6 +16,7 @@ function navMenu() {
   const caseStudies = $("#dropdown_menu-case_studies");
 
   const menuBGOffset = 3;
+  const menuBGOffsetLeft = 30;
   const isLandingPage =
     window.location.pathname === "/" ||
     window.location.pathname.includes("/home");
@@ -126,8 +127,8 @@ function navMenu() {
 
     const horizontal = currentLink.offset().left;
     const left =
-      $(currentLink).data("is-nav-dropdown-center") && mouse === "enter"
-        ? horizontal / 2
+      $(currentLink).data("is-nav-submenu-center") && mouse === "enter"
+        ? (horizontal / 2) - menuBGOffsetLeft
         : horizontal + menuBGOffset;
     gsap.set(menuBG, {
       width: currentContent.outerWidth(),
@@ -153,12 +154,18 @@ function navMenu() {
     // Hover In
     menuClass.on("mouseenter", function () {
       storage[menuTitle] = true;
+      const currentLink = menuLink.filter(".active");
+      const isCenter = $(currentLink).data("is-nav-submenu-center")
 
       if (isMenuBGTransition) {
         menuBG.addClass("has-transition");
       }
       menuWrapperClass.addClass("has-child");
-      menuClass.addClass("has-collpase");
+      if(isCenter) {
+        menuClass.addClass("has-collpase-left");
+      } else {
+        menuClass.addClass("has-collpase");
+      }
       if (isLandingPage) {
         menuClass.css("background-color", "#f3f3f3");
       } else {
@@ -180,11 +187,18 @@ function navMenu() {
     function hoverLeft() {
       setTimeout(function () {
         if (!storage[menuTitle] && !storage[submenuTitle]) {
+          const currentLink = menuLink.filter(".active");
+          const isCenter = $(currentLink).data("is-nav-submenu-center")
+          
           if (isMenuBGTransition) {
             menuBG.removeClass("has-transition");
           }
           menuWrapperClass.removeClass("has-child");
-          menuClass.removeClass("has-collpase");
+          if(isCenter) {
+            menuClass.removeClass("has-collpase-left");
+          } else {
+            menuClass.removeClass("has-collpase");
+          }
           if (isLandingPage) {
             menuClass.css("background-color", "#ffffff");
           } else {
