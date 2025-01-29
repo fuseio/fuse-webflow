@@ -430,17 +430,28 @@ a:hover .link-arrow {
   mask-composite: exclude;
 }
 
-.btn.is-airdrop {
-  position: relative;
+.btn.is-points .btn_points-overlay {
+  background-image: linear-gradient(120deg, #80DD87 0, #F6A051 44%, #80DA87 100%);
+  background-size: 200% auto;
+  animation: points-gradient 3s linear infinite;
 }
 
-.btn.is-airdrop::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 10rem;
-  border: 2px solid transparent;
-  background: linear-gradient(140deg, #80DD87 0, #F6A051 44%, #80DA87 100%) border-box;
-  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
+.btn.is-points:hover .btn_points-overlay {
+  filter: blur(8px) brightness(1.25);
+}
+
+.btn.is-points .btn_points-wrapper {
+  background-image: linear-gradient(120deg, #80DD87 0, #F6A051 44%, #80DA87 100%);
+  background-size: 200% auto;
+  animation: points-gradient 3s linear infinite;
+}
+
+.btn.is-points:hover .btn_points-container {
+  background-color: rgba(162, 245, 170, 0.75);
+}
+
+@keyframes points-gradient {
+  100% {
+    background-position: 200%;
+  }
 }
