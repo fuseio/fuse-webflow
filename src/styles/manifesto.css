@@ -1,3 +1,51 @@
-.manifesto_body .navbar .menu_dp-link-only {
+@media screen and (min-width: 992px) {
+  .manifesto_body .navbar .menu_dp-link-only {
+    filter: invert(1);
+    color: var(--pale-green);
+  }
+}
+
+.manifesto_body .navbar .menu_dp-link-only:before {
+  display: none;
+}
+
+.manifesto_body .navbar .menu_dp-link-only div {
+  position: relative;
+  left: 12px;
+  transition: opacity 0.2s ease;
+}
+
+.manifesto_body .navbar .menu_dp-link-only div:hover {
+  opacity: 0.7;
+}
+
+.manifesto_body .navbar .menu_dp-link-only div:before {
+  content: url("https://cdn.prod.website-files.com/63a6d0820bd1f472b4150067/672b33e31ee7d7d459bf0899_Ember.svg");
+  position: absolute;
+  left: -24px;
   filter: invert(1);
+}
+
+@media screen and (min-width: 992px) {
+  .manifesto_body .navbar .menu_dp-link-only div:before {
+    filter: invert(0);
+  }
+}
+
+html,
+body {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+html::-webkit-scrollbar {
+  width: 1px;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: transparent;
 }
