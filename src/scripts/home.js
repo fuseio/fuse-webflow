@@ -206,6 +206,68 @@ function initCaseSwiper() {
   });
 }
 
+function animateZkevm() {
+  const section = document.querySelector(".section_zkevm");
+  const spacing = document.querySelector(".section-spacing.is-zkevm");
+  const imageWrapper = document.querySelector(".zkevm_images");
+  const images = document.querySelectorAll(".zkevm_image");
+  const details = document.querySelectorAll(".zkevm_detail");
+  const summaries = document.querySelectorAll(
+    ".zkevm_detail h3"
+  );
+  const contents = document.querySelectorAll(
+    ".zkevm_detail p"
+  );
+  const progressbars = document.querySelectorAll(
+    ".zkevm_detail .zkevm_progressbar"
+  );
+  const detailsLength = details.length;
+  const sectionHeight = section.clientHeight;
+  const step = sectionHeight / detailsLength;
+  const spacingTop = spacing.computedStyleMap().get("top").value;
+
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+  const imageTl = gsap.timeline();
+
+  details.forEach((detail, index) => {
+    ScrollTrigger.create({
+      trigger: detail,
+      start: `top+=${index * step} center`,
+      end: `top+=${(index + 1) * step} center`,
+      onEnter: () => {
+        for (let i = 0; i < index; i++) {
+          gsap.to(contents[i], { opacity: 0, height: "0px", duration: 0.5 });
+        }
+        gsap.to(contents[index], { opacity: 1, height: "auto", duration: 0.5 });
+        gsap.to(progressbars[index], { width: "100%", duration: 0.5 });
+        imageTl
+          .to(imageWrapper, { y: "-=400", duration: 0.3 })
+          .to(images[index], { y: "-=600", duration: 0.2 }, ">");
+      },
+      onLeaveBack: () => {
+        gsap.to(contents[index], { opacity: 1, height: "auto", duration: 0.5 });
+        gsap.to(progressbars[index], { width: "0%", duration: 0.5 });
+        imageTl
+          .to(images[index], { y: "+=600", duration: 0.2 })
+          .to(imageWrapper, { y: "+=400", duration: 0.3 }, ">");
+        for (let i = index + 1; i < detailsLength; i++) {
+          gsap.to(contents[i], { opacity: 0, height: "0px", duration: 0.5 });
+        }
+      }
+    });
+  });
+
+  details.forEach((_, index) => {
+    summaries[index].addEventListener("click", () => {
+      const y = section.offsetTop + spacingTop + index * step;
+      gsap.to(window, {
+        scrollTo: { y, autoKill: false },
+        duration: 1
+      });
+    });
+  });
+}
+
 window.Webflow?.push(async () => {
   safeExecute(initInfiniteSlide);
   safeExecute(initTestimonialsSwiper);
@@ -217,4 +279,5 @@ window.Webflow?.push(async () => {
   safeExecute(animateHeroNumbers);
   safeExecute(initCarouselBannerSwiper);
   safeExecute(initCaseSwiper);
+  safeExecute(animateZkevm);
 });
