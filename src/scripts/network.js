@@ -1,4 +1,6 @@
-import { animateHeroNumbers, safeExecute, animateJoinImage } from '../utils/helper';
+import { CountUp } from 'countup.js';
+
+import { safeExecute, animateJoinImage } from '../utils/helper';
 
 function animateSummaryTab() {
   const pills = document.querySelectorAll(".network_summary-pill");
@@ -68,10 +70,53 @@ function animateL2Features() {
   });
 }
 
+export function animateAdoptionNumbers() {
+  const countUpDigits = [
+    {
+      target: document.querySelector("#transactions-speed-digit"),
+      defaults: {
+        startVal: 0,
+        endVal: 3133,
+        decimalPlaces: 0,
+        duration: 2,
+      }
+    },
+    {
+      target: document.querySelector("#total-transactions-digit"),
+      defaults: {
+        startVal: 0,
+        endVal: 135_345_123,
+        decimalPlaces: 0,
+        duration: 10,
+      }
+    },
+    {
+      target: document.querySelector("#validator-nodes-digit"),
+      defaults: {
+        startVal: 0,
+        endVal: 1516,
+        decimalPlaces: 0,
+        duration: 2,
+      },
+    },
+  ]
+
+  const countUpCommonDefaults = {
+    enableScrollSpy: true,
+    scrollSpyOnce: true,
+  }
+
+  for (let i = 0; i < countUpDigits.length; i++) {
+    const countUp = new CountUp(countUpDigits[i].target, countUpDigits[i].defaults.endVal, { ...countUpDigits[i].defaults, ...countUpCommonDefaults });
+    countUp.handleScroll();
+    countUp.start();
+  }
+}
+
 window.Webflow?.push(async () => {
   safeExecute(animateSummaryTab);
   safeExecute(animateRoadmap);
-  safeExecute(animateHeroNumbers);
+  safeExecute(animateAdoptionNumbers);
   safeExecute(animateL2Features);
   safeExecute(animateJoinImage);
 });
