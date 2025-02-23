@@ -206,6 +206,35 @@ function initCaseSwiper() {
   });
 }
 
+function animateZkevm() {
+  const imageWrapper = document.querySelector(".zkevm_images");
+  const images = document.querySelectorAll(".zkevm_image");
+  const details = document.querySelectorAll(".zkevm_detail");
+  const summaries = document.querySelectorAll(".zkevm_detail h3");
+  const contents = document.querySelectorAll(".zkevm_detail p");
+
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+  gsap.set(contents[0], { display: 'block' });
+
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power4.inOut" } });
+  tl.addLabel("step0");
+
+  for (let i = 0; i < details.length - 1; i++) {
+    tl.to(contents[i], { display: 'none' });
+    tl.to(contents[i + 1], { display: 'block' });
+    tl.to(imageWrapper, { y: `-${((i + 1) * 400) - (i * 50)}`, duration: 0.1 });
+    tl.to(images[i], { y: `-${(i + 1) * 800}`, duration: 0.5 }, ">+0.5");
+    tl.addLabel("step" + (i + 1));
+  }
+
+  summaries.forEach((summary, index) => {
+    summary.addEventListener("click", () => {
+      tl.tweenTo("step" + index, { duration: 1 });
+    });
+  });
+}
+
 window.Webflow?.push(async () => {
   safeExecute(initInfiniteSlide);
   safeExecute(initTestimonialsSwiper);
@@ -217,4 +246,5 @@ window.Webflow?.push(async () => {
   safeExecute(animateHeroNumbers);
   safeExecute(initCarouselBannerSwiper);
   safeExecute(initCaseSwiper);
+  safeExecute(animateZkevm);
 });
