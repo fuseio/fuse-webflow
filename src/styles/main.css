@@ -455,3 +455,7 @@ a:hover .link-arrow {
     background-position: 200%;
   }
 }
+
+.faq-richtext p {
+  margin-bottom: 10px;
+}
