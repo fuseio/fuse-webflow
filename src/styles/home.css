@@ -194,9 +194,7 @@ a.inherit {
 
 /* ANIMATE HERO START */
 
-.home_hero-h1,
 #hero-description,
-.hero-h1-word,
 #hero-logo-title,
 .home_hero_logo-slide img {
   opacity: 0;
@@ -213,7 +211,6 @@ a.inherit {
   transform: translateY(20px);
 }
 
-.hero-h1-word,
 .hero-description-word {
   display: inline-block;
 }
@@ -253,14 +250,6 @@ a.inherit {
 .home_hero_logo_slide-wrapper:after {
   right: 0;
   background: linear-gradient(to right, #96f0a400, #96f0a4);
-}
-
-.home_hero_logo-slide {
-  animation: 35s heroLogoSlide infinite linear;
-}
-
-.home_hero_logo-slide img {
-  margin: 0 2rem;
 }
 
 /* ANIMATE HERO LOGO SLIDE END */

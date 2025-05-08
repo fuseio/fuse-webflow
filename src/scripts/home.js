@@ -100,42 +100,15 @@ function childObserver(selector = ".section-blog .swiper-wrapper") {
 }
 
 function animateHero() {
-  const heading = document.querySelector(".home_hero-h1");
-  const headingWords = heading.textContent.split(" ");
-  heading.innerHTML = headingWords
-    .map((headingWord) => `<span class="hero-h1-word">${headingWord}</span>`)
-    .join(" ");
-
-  const description = document.querySelector("#hero-description");
-  const descriptionWords = description.textContent.split(" ");
-  description.innerHTML = descriptionWords
-    .map(
-      (descriptionWord) =>
-        `<span class="hero-description-word">${descriptionWord}</span>`
-    )
-    .join(" ");
-
   const tl = gsap.timeline();
   tl.to(".home_hero_logo-slide img", {
     duration: 0.3,
     opacity: 1,
     x: 0,
     stagger: 0.05,
+    delay: 0.5,
   })
     .to("#hero-logo-title", { duration: 0.3, opacity: 1 }, "<")
-    .to(".home_hero-h1", { duration: 0, opacity: 1 }, "<0.1")
-    .to(".hero-h1-word", {
-      duration: 0.5,
-      opacity: 1,
-      stagger: 0.2,
-    }, "<")
-    .to("#hero-description", { duration: 0, opacity: 1 })
-    .to(".hero-description-word", {
-      duration: 0.3,
-      opacity: 1,
-      y: 0,
-      stagger: 0.05,
-    })
     .to(".home-hero-button-wrap", {
       duration: 0.3,
       opacity: 1,
@@ -235,6 +208,79 @@ function animateZkevm() {
   });
 }
 
+function initSwiper(section) {
+  return new Swiper(`#${section}-swiper`, {
+    centeredSlides: true,
+    slidesPerView: 1,
+    grabCursor: true,
+  });
+}
+
+function initTab(section) {
+  const swiper = initSwiper(section);
+
+  document.querySelectorAll(`.section_${section} .tab_trigger`).forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll(`.section_${section} .tab_trigger`).forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      updateTabBackground(section, index);
+      swiper.slideTo(index);
+    });
+  });
+
+  swiper.on('slideChange', () => {
+    const activeIndex = swiper.activeIndex;
+    document.querySelectorAll(`.section_${section} .tab_trigger`).forEach(t => t.classList.remove('active'));
+    document.querySelectorAll(`.section_${section} .tab_trigger`)[activeIndex].classList.add('active');
+    updateTabBackground(section, activeIndex);
+  });
+
+  document.querySelector(`.section_${section} .tab_trigger`).click();
+}
+
+function updateTabBackground(section, index) {
+  const tab = document.querySelectorAll(`.section_${section} .tab_trigger`)[index];
+  const background = document.querySelector(`.section_${section} .tab_background`);
+  const backgroundLeft = parseFloat(getComputedStyle(background).left);
+  const tabRect = tab.getBoundingClientRect();
+  const containerRect = tab.parentElement.getBoundingClientRect();
+  const containerBorder = parseFloat(getComputedStyle(tab.parentElement).borderLeftWidth);
+
+  background.style.width = `${tabRect.width}px`;
+  background.style.transform = `translateX(${tabRect.left - containerRect.left - backgroundLeft - containerBorder}px)`;
+}
+
+function initRotatingText() {
+  const ANIMATION_DURATION = 600;
+  const ANIMATION_DELAY = 2000;
+
+  function updateWord() {
+    const wrapper = document.querySelector('.hero_rotating-wrapper');
+    const words = wrapper.querySelectorAll('.hero_rotating-word');
+
+    words.forEach((word, index) => {
+      const offset = (index - 1) * 100;
+      word.style.top = `${offset}%`;
+    });
+
+    function moveFirstWord() {
+      const firstWord = wrapper.firstElementChild;
+      const clone = firstWord.cloneNode(true);
+
+      const offset = (words.length - 1) * 100;
+      clone.style.top = `${offset}%`;
+
+      wrapper.removeChild(firstWord);
+      wrapper.appendChild(clone);
+    }
+
+    setTimeout(moveFirstWord, ANIMATION_DURATION);
+  }
+
+  updateWord();
+  setInterval(updateWord, ANIMATION_DELAY);
+}
+
 window.Webflow?.push(async () => {
   safeExecute(initInfiniteSlide);
   safeExecute(initTestimonialsSwiper);
@@ -247,4 +293,7 @@ window.Webflow?.push(async () => {
   safeExecute(initCarouselBannerSwiper);
   safeExecute(initCaseSwiper);
   safeExecute(animateZkevm);
+  safeExecute(initTab, "study");
+  safeExecute(initTab, "highlight");
+  safeExecute(initRotatingText);
 });

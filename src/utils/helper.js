@@ -27,16 +27,16 @@ export function animateHeroNumbers() {
         endVal: 9000,
         decimalPlaces: 0,
         duration: 2,
-        separator: '',
       },
     },
     {
       target: document.querySelector("#smartwallets-digit"),
       defaults: {
         startVal: 0,
-        endVal: 1.00,
+        endVal: 1,
         decimalPlaces: 2,
         duration: 2,
+        formattingFn: (n) => n === 1 ? '1' : n.toFixed(2)
       }
     },
   ]
