@@ -252,4 +252,12 @@ a.inherit {
   background: linear-gradient(to right, #96f0a400, #96f0a4);
 }
 
+.home_hero_logo-slide {
+  animation: 35s heroLogoSlide infinite linear;
+}
+
+.home_hero_logo-slide img {
+  margin: 0 2rem;
+}
+
 /* ANIMATE HERO LOGO SLIDE END */
