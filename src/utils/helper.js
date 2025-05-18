@@ -115,6 +115,7 @@ export function initTippy() {
   tippy("[data-tippy-content]", {
     placement: "bottom",
     arrow: true,
+    allowHTML: true,
   });
 }
 
