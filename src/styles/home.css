@@ -194,9 +194,7 @@ a.inherit {
 
 /* ANIMATE HERO START */
 
-.home_hero-h1,
 #hero-description,
-.hero-h1-word,
 #hero-logo-title,
 .home_hero_logo-slide img {
   opacity: 0;
@@ -213,7 +211,6 @@ a.inherit {
   transform: translateY(20px);
 }
 
-.hero-h1-word,
 .hero-description-word {
   display: inline-block;
 }
