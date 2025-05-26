@@ -261,3 +261,24 @@ a.inherit {
 }
 
 /* ANIMATE HERO LOGO SLIDE END */
+
+.fusebox_plan.is-pricing-popular::before {
+  content: "";
+  position: absolute;
+  inset: -60px -20px;
+  background: radial-gradient(circle at center, #AFFAB6 0%, rgba(175, 250, 182, 0) 100%);
+  z-index: -2;
+  border-radius: inherit;
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.fusebox_plan.is-pricing-popular::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #fff;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+}
