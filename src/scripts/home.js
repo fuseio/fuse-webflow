@@ -216,26 +216,40 @@ function initSwiper(section) {
   });
 }
 
-function initTab(section) {
-  const swiper = initSwiper(section);
+function slideSwiper(_section, swiper, index) {
+  swiper.slideTo(index);
+}
 
-  document.querySelectorAll(`.section_${section} .tab_trigger`).forEach((tab, index) => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll(`.section_${section} .tab_trigger`).forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      updateTabBackground(section, index);
-      swiper.slideTo(index);
-    });
-  });
-
+function handleSlideChange(section, swiper) {
   swiper.on('slideChange', () => {
     const activeIndex = swiper.activeIndex;
     document.querySelectorAll(`.section_${section} .tab_trigger`).forEach(t => t.classList.remove('active'));
     document.querySelectorAll(`.section_${section} .tab_trigger`)[activeIndex].classList.add('active');
     updateTabBackground(section, activeIndex);
   });
+}
+
+function handleTabClick(section, swiper, onChange) {
+  document.querySelectorAll(`.section_${section} .tab_trigger`).forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll(`.section_${section} .tab_trigger`).forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      updateTabBackground(section, index);
+      onChange?.(section, swiper, index);
+    });
+  });
+
+  if(swiper) {
+    handleSlideChange(section, swiper);
+  }
 
   document.querySelector(`.section_${section} .tab_trigger`).click();
+}
+
+function initTab(section, onChange) {
+  const swiper = initSwiper(section);
+
+  handleTabClick(section, swiper, onChange);
 }
 
 function updateTabBackground(section, index) {
@@ -281,6 +295,13 @@ function initRotatingText() {
   setInterval(updateWord, ANIMATION_DELAY);
 }
 
+function bilingCycle(_section, _swiper, index) {
+  const billingCosts = document.querySelectorAll(`.fusebox_plan-cost`);
+  const billingCost = document.querySelectorAll(`.fusebox_plan-cost.is-${index}`);
+  billingCosts.forEach(cost => cost.style.display = 'none');
+  billingCost.forEach(cost => cost.style.display = 'block');
+}
+
 window.Webflow?.push(async () => {
   safeExecute(initInfiniteSlide);
   safeExecute(initTestimonialsSwiper);
@@ -293,7 +314,8 @@ window.Webflow?.push(async () => {
   safeExecute(initCarouselBannerSwiper);
   safeExecute(initCaseSwiper);
   safeExecute(animateZkevm);
-  safeExecute(initTab, "study");
-  safeExecute(initTab, "highlight");
+  safeExecute(initTab, "study", slideSwiper);
+  safeExecute(initTab, "highlight", slideSwiper);
   safeExecute(initRotatingText);
+  safeExecute(initTab, "pricing", bilingCycle);
 });
