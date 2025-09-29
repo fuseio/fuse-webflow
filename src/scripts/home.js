@@ -1,4 +1,4 @@
-import { safeExecute, animateHeroNumbers, initSwiperBlog } from '../utils/helper';
+import { safeExecute, animateHeroNumbers, initSwiperBlog, BASE_URL } from '../utils/helper';
 
 function initInfiniteSlide() {
   $(".marquee_track").infiniteslide({
@@ -281,6 +281,15 @@ function initRotatingText() {
   setInterval(updateWord, ANIMATION_DELAY);
 }
 
+async function fetchSolidApy(className) {
+  const totalApyElement = document.querySelector(className);
+  if (!totalApyElement) return;
+
+  const data = await fetchData(`${BASE_URL.solid.analytics}/analytics/v1/yields/total-apy`);
+
+  totalApyElement.innerHTML = data.toFixed(2);
+}
+
 window.Webflow?.push(async () => {
   safeExecute(initInfiniteSlide);
   safeExecute(initTestimonialsSwiper);
@@ -296,4 +305,5 @@ window.Webflow?.push(async () => {
   safeExecute(initTab, "study");
   safeExecute(initTab, "highlight");
   safeExecute(initRotatingText);
+  safeExecute(fetchSolidApy, '#solid-apy');
 });
