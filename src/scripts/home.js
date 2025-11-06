@@ -123,6 +123,21 @@ function animateHero() {
     });
 }
 
+function animateHeroContent(className) {
+  gsap.fromTo(className, 
+    {
+      opacity: 0,
+      y: -50
+    },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      ease: "power2.out"
+    }
+  );
+}
+
 function initHighlightSwiper() {
   new Swiper("#home-highlight-swiper", {
     slidesPerView: 1,
@@ -297,6 +312,7 @@ window.Webflow?.push(async () => {
   safeExecute(getBlogPosts);
   safeExecute(childObserver);
   safeExecute(animateHero);
+  safeExecute(animateHeroContent, ".hero2_wrapper");
   safeExecute(initHighlightSwiper);
   safeExecute(animateHeroNumbers);
   safeExecute(initCarouselBannerSwiper);

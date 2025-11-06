@@ -215,6 +215,10 @@ a.inherit {
   display: inline-block;
 }
 
+.hero2_wrapper {
+  opacity: 0;
+}
+
 /* ANIMATE HERO END */
 
 .operator_content:hover p {
