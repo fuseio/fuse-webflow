@@ -132,7 +132,7 @@ function animateHeroContent(className) {
     {
       opacity: 1,
       y: 0,
-      duration: 1.2,
+      duration: 2.4,
       ease: "power2.out"
     }
   );
