@@ -459,3 +459,14 @@ a:hover .link-arrow {
 .faq-richtext p {
   margin-bottom: 10px;
 }
+
+/* Fix: Remove the desktop hover-bridge pseudo-element on mobile/tablet.
+   On mobile, .menu_dp-link::after (height:52px, top:100%) sits invisibly
+   over the first submenu link, intercepting taps and toggling the dropdown
+   closed instead of navigating. On mobile there is no hover, so the bridge
+   is not needed. */
+@media screen and (max-width: 991px) {
+    .menu_dp-link::after {
+          display: none;
+    }
+}
